@@ -30,14 +30,13 @@ public class POMWekanCardsTests {
     }
     @Test
     public void addingCommentTest() throws Exception {
-        synchronized (this) {
             assertTrue(loginPage.signIn()
                     .addNewBoardAndGetIt("example")
                     .createNewList("list")
                     .addCard("list", "firstCard")
                     .getCard("list", "firstCard")
                     .addComment("this is Wekan's first test"));
-        }
+
     }
 
     @AfterEach

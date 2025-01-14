@@ -34,24 +34,25 @@ public class POMWekanBoardsTests {
     @Test
     public void creatingBoardTesting()  {
 
+            boardsPage.addNewBoard("example");
 
-        boardsPage.addNewBoard("example");
+            assertTrue(boardsPage.boardExist("example"), "Board 'example' should exist");
+            assertFalse(boardsPage.boardExist("example1"), "Board 'example1' should not exist");
 
-        assertTrue(boardsPage.boardExist("example"), "Board 'example' should exist");
-        assertFalse(boardsPage.boardExist("example1"), "Board 'example1' should not exist");
     }
 
     @Test
     public void addToFavoriteTest()  {
-
         assertTrue(boardsPage.addToFavorite("f"));
         assertFalse(boardsPage.addToFavorite("example"));
+
     }
 
     @Test
     public void deleteBoardTest() {
+        boardsPage.addNewBoard("to_be_deleted");
+        assertTrue(boardsPage.deleteBoard("to_be_deleted"));
 
-        assertTrue(boardsPage.deleteBoard("example"));
     }
 
     @AfterEach

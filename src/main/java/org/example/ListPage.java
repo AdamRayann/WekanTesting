@@ -38,6 +38,8 @@ public class ListPage  {
 
     }
 
+
+    //for lists
     public Boolean exists(String listName)
     {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
@@ -54,6 +56,45 @@ public class ListPage  {
             }
         }
     return false;
+    }
+
+
+    //for cards
+    public Boolean exists(String listName,String cardName)
+    {
+        List<WebElement> webElements = driver.findElements(By.className("js-list"));
+        if (webElements.isEmpty())
+            return false;
+        for (WebElement webElement : webElements)
+        {
+            try {
+                if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
+                    return cardExists(webElement,cardName);
+                }
+            } catch (NoSuchElementException e) {
+                continue;
+            }
+        }
+        return false;
+    }
+
+
+    public Boolean cardExists(WebElement webElement,String cardName)
+    {
+        List<WebElement> webElements = webElement.findElements(By.className("minicards"));
+        if (webElements.isEmpty())
+            return false;
+        for (WebElement w : webElements)
+        {
+            try {
+                if (w.findElement(By.cssSelector("p")).getText().equals(cardName)) {
+                    return true;
+                }
+            } catch (NoSuchElementException e) {
+                continue;
+            }
+        }
+        return false;
     }
 
     public String getList(String listName)
