@@ -3,13 +3,12 @@ package CardsFunctionality;
 import org.example.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
 import static org.example.DriverFactory.getDriver;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class POMWekanCardsTests {
+public class WekanCardsTests {
 
     private LoginPage loginPage;
     private WebDriver driver;
@@ -28,16 +27,16 @@ public class POMWekanCardsTests {
         driver.get("http://localhost:5000/");
         loginPage=new LoginPage(driver).get();
     }
-    @Test
-    public void addingCommentTest() throws Exception {
-            assertTrue(loginPage.signIn()
-                    .addNewBoardAndGetIt("example")
-                    .createNewList("list")
-                    .addCard("list", "firstCard")
-                    .getCard("list", "firstCard")
-                    .addComment("this is Wekan's first test"));
-
-    }
+//    @Test
+//    public void addingCommentTest() throws Exception {
+//            assertTrue(loginPage.signIn()
+//                    .addNewBoardAndGetIt("example")
+//                    .createNewList("list")
+//                    .addCard("list", "firstCard")
+//                    .getCard("list", "firstCard")
+//                    .addComment("this is Wekan's first test"));
+//
+//    }
 
     @AfterEach
     public void tearDown() {

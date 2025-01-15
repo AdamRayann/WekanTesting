@@ -58,6 +58,44 @@ public class ListPage  {
     return false;
     }
 
+    public ListPage delete(String listName)
+    {
+        List<WebElement> webElements = driver.findElements(By.className("js-list"));
+        if (webElements.isEmpty())
+            return null;
+        for (WebElement webElement : webElements)
+        {
+            try {
+                if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
+                    webElement.findElement(By.cssSelector(".list-header-menu .js-open-list-menu")).click();
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                    WebElement archiveButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".pop-over .fa-archive")));
+                    archiveButton.click();
+                    return this;
+                }
+            } catch (NoSuchElementException e) {
+                continue;
+            }
+        }
+
+        return null;
+    }
+
+    public ListPage delete(String listName,String cardName)
+    {
+        WebElement card = getCard(listName,cardName);
+        if (card==null)
+            return null;
+        card.findElement(By.cssSelector("a.minicard-details-menu.js-open-minicard-details-menu[title='cardDetailsActionsPopup-title']")).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement archiveButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".pop-over-list .js-archive")));
+        archiveButton.click();
+
+        archiveButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".js-confirm")));
+        archiveButton.click();
+        return this;
+    }
+
 
     //for cards
     public Boolean exists(String listName,String cardName)
@@ -79,7 +117,7 @@ public class ListPage  {
     }
 
 
-    public Boolean cardExists(WebElement webElement,String cardName)
+    private Boolean cardExists(WebElement webElement,String cardName)
     {
         List<WebElement> webElements = webElement.findElements(By.className("minicards"));
         if (webElements.isEmpty())
@@ -97,7 +135,7 @@ public class ListPage  {
         return false;
     }
 
-    public String getList(String listName)
+    private String getList(String listName)
     {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         if (webElements.isEmpty())
@@ -137,7 +175,7 @@ public class ListPage  {
     }
 
 
-    public CardPage getCard(String listName, String cardName) {
+    public WebElement getCard(String listName, String cardName) {
 
         String listById = getList(listName);
 
@@ -152,16 +190,15 @@ public class ListPage  {
             try {
                 WebElement cardNameElement = cardElement.findElement(By.cssSelector("p"));
                 if (cardNameElement.getText().equals(cardName)) {
-                    cardNameElement.click();
-                    driver.findElement(By.className("fa-window-maximize")).click();
-                    return new CardPage(driver);
+
+                    return cardElement;
                 }
             } catch (NoSuchElementException e) {
                 continue;
             }
         }
 
-        return new CardPage(driver);
+        return null;
     }
 
 }

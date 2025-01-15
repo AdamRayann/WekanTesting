@@ -97,7 +97,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
                 }
             }
             return false;
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -108,7 +108,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
             WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
             WebElement starIcon = boardElement.findElement(By.cssSelector("i.fa.js-star-board"));
 
-            if (!starIcon.getAttribute("class").contains("fa-star")) {
+            if (!starIcon.getDomAttribute("class").contains("fa-star")) {
                 starIcon.click();
             }
 
@@ -121,7 +121,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         }
     }
 
-    public boolean deleteBoard(String boardName) {
+    public BoardsPage deleteBoard(String boardName) {
         String boardId = getBoardId(boardName);
         try {
             WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
@@ -129,13 +129,10 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
             archiveIcon.click();
 
-
-            WebElement header = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
-
-            return header != null;
+            return this;
 
         } catch (NoSuchElementException e) {
-            return false;
+            return null;
         }
     }
 

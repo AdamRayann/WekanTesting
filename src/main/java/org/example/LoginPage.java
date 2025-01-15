@@ -5,10 +5,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.LoadableComponent;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
 import java.time.Duration;
 
 public class LoginPage extends LoadableComponent<LoginPage> {
@@ -52,20 +54,22 @@ public class LoginPage extends LoadableComponent<LoginPage> {
     }
 
     public BoardsPage signIn() throws Exception {
-        try{
-            driver.findElement(userNameTextField).sendKeys(account.getUserName());
-            driver.findElement(passwordTextField).sendKeys(account.getPassword());
-            driver.findElement(signInBtn).click();
+//        WebElement element = driver.findElement(userNameTextField);
+//        Actions actions = new Actions(driver);
+//        actions.moveToElement(element);
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement usernameField = wait1.until(ExpectedConditions.elementToBeClickable(userNameTextField));
+        usernameField.click();
+        driver.findElement(userNameTextField).sendKeys(account.getUserName());
+        driver.findElement(passwordTextField).sendKeys(account.getPassword());
+        driver.findElement(signInBtn).click();
 
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            WebElement headerElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#header-main-bar > h1")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement headerElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#header-main-bar > h1")));
 
-            return new BoardsPage(driver);
+        return new BoardsPage(driver);
 
-        }catch (Exception e)
-        {
-            throw new Exception(e+"");
-        }
+
     }
 }

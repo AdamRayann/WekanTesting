@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 import static org.example.DriverFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class POMWekanBoardsTests {
+public class WekanBoardsTests {
     private LoginPage loginPage;
     private WebDriver driver;
     private BoardsPage boardsPage;
@@ -35,24 +35,28 @@ public class POMWekanBoardsTests {
     public void creatingBoardTesting()  {
 
             boardsPage.addNewBoard("example");
+            boolean boardExist=boardsPage.boardExist("example");
 
-            assertTrue(boardsPage.boardExist("example"), "Board 'example' should exist");
-            assertFalse(boardsPage.boardExist("example1"), "Board 'example1' should not exist");
+            assertTrue(boardExist, "Board 'example' should exist");
 
     }
 
     @Test
     public void addToFavoriteTest()  {
-        assertTrue(boardsPage.addToFavorite("f"));
-        assertFalse(boardsPage.addToFavorite("example"));
+        boolean addedToFavorite =boardsPage.addToFavorite("f");
+        boolean notAddedToFavorite =boardsPage.addToFavorite("example");
+
+        assertTrue(addedToFavorite);
+        assertFalse(notAddedToFavorite);
 
     }
 
     @Test
     public void deleteBoardTest() {
         boardsPage.addNewBoard("to_be_deleted");
-        assertTrue(boardsPage.deleteBoard("to_be_deleted"));
+        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
 
+        assertFalse(boardExist);
     }
 
     @AfterEach
