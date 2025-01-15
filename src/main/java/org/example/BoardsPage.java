@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BoardsPage extends LoadableComponent<BoardsPage> {
 
-    private final WebDriver driver ;
+    private static WebDriver driver = null;
     private final String BaseURL = "http://localhost:5000";
     private final By header = By.cssSelector("#header-main-bar > h1");
     private final By addNewBoardBtn = By.cssSelector("#content > .wrapper > .board-list > .js-add-board > .board-list-item");
@@ -62,7 +62,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         driver.get(url);
 
     }
-    public String getBoardId(String boardName) {
+    public static String getBoardId(String boardName) {
         try {
 
             List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
