@@ -54,9 +54,7 @@ public class LoginPage extends LoadableComponent<LoginPage> {
     }
 
     public BoardsPage signIn() throws Exception {
-//        WebElement element = driver.findElement(userNameTextField);
-//        Actions actions = new Actions(driver);
-//        actions.moveToElement(element);
+
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement usernameField = wait1.until(ExpectedConditions.elementToBeClickable(userNameTextField));
         usernameField.click();

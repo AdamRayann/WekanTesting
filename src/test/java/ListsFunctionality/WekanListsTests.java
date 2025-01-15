@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
+import java.util.List;
+
 import static org.example.DriverFactory.getDriver;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,6 +70,42 @@ public class WekanListsTests {
         assertFalse(cardExist);
     }
 
+    @Test
+    public void moveBoardTest() throws Exception {
+        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
+        listPage.createNewList("Doing");
+        listPage.createNewList("To Do");
+
+        List<String> originalOrder = listPage.getListOrder();
+        listPage.movingList("Done", "To Do");
+
+        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
+
+        assertTrue(listMoved);
+    }
+
+
+    @Test
+    public void testCardMove() throws Exception {
+        String sourceListName = "Doing";
+        String targetListName = "To Do";
+        String cardToBeMoved = "Task 1";
+
+        listPage=loginPage.signIn().addNewBoardAndGetIt("example");
+        listPage.createNewList(sourceListName).addCard(sourceListName,cardToBeMoved);
+        listPage.createNewList(targetListName);
+
+
+        List<String> originalSourceOrder = listPage.getCardOrder(sourceListName);
+        List<String> originalTargetOrder = listPage.getCardOrder(targetListName);
+
+        listPage.movingCard(sourceListName, "Task 1", targetListName);
+
+        assertTrue(listPage.hasCardOrderChanged(sourceListName, originalSourceOrder), "The source list order should have changed.");
+        assertTrue(listPage.hasCardOrderChanged(targetListName, originalTargetOrder), "The target list order should have changed.");
+    }
+
+
 
 //    @Test
 //    public void editListNameTest() throws Exception {
@@ -79,10 +117,10 @@ public class WekanListsTests {
 //        }
 //    }
 
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 }

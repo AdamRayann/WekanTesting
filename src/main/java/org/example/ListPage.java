@@ -1,10 +1,12 @@
 package org.example;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListPage  {
@@ -29,7 +31,7 @@ public class ListPage  {
         driver.findElement(addNewListBtn).click();
         driver.findElement(By.className("list-name-input")).sendKeys(listName);
         driver.findElement(By.className("confirm")).click();
-
+        driver.findElement(By.className("js-close-inlined-form")).click();
         if (exists(listName)){
 
             return this;
@@ -152,6 +154,9 @@ public class ListPage  {
         }
         return null;
     }
+
+
+
     public ListPage addCard(String listName, String cardName) {
         String listById = getList(listName);
 
@@ -166,6 +171,8 @@ public class ListPage  {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#" + listById + " .js-card-title"))).sendKeys(cardName);
 
             wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .confirm"))).click();
+
+            driver.findElement(By.className("js-close-inlined-form")).click();
 
             return this;
         } catch (TimeoutException e) {
@@ -200,5 +207,86 @@ public class ListPage  {
 
         return null;
     }
+
+    public boolean hasListOrderChanged(List<String> originalOrder) {
+        List<String> currentOrder = getListOrder();
+
+        return !currentOrder.equals(originalOrder);
+    }
+
+    public List<String> getListOrder() {
+        List<WebElement> lists = driver.findElements(By.cssSelector("div.list.js-list"));
+        List<String> listNames = new ArrayList<>();
+
+        for (WebElement list : lists) {
+            String listName = list.findElement(By.cssSelector(".list-header-name div.viewer p")).getText();
+            listNames.add(listName);
+        }
+
+        return listNames;
+    }
+
+
+    public ListPage movingList(String sourceListName, String targetListName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement sourceList = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + sourceListName + "']]")));
+        WebElement targetList = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + targetListName + "']]")));
+
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(sourceList)
+                .moveByOffset(200, 3) // Initial movement
+                .pause(Duration.ofMillis(500))
+                .moveByOffset(400, 3) // Move further
+                .pause(Duration.ofMillis(500))
+                .moveToElement(targetList)
+                .release()
+                .perform();
+
+        return this;
+    }
+
+    public List<String> getCardOrder(String listName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement list = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + listName + "']]")));
+
+        List<WebElement> cards = list.findElements(By.cssSelector("div.minicard"));
+        List<String> cardNames = new ArrayList<>();
+
+        for (WebElement card : cards) {
+            String cardName = card.findElement(By.cssSelector("p")).getText();
+            cardNames.add(cardName);
+        }
+
+        return cardNames;
+    }
+
+    public boolean hasCardOrderChanged(String listName, List<String> originalOrder) {
+        List<String> currentOrder = getCardOrder(listName);
+        return !currentOrder.equals(originalOrder);
+    }
+
+    public ListPage movingCard(String sourceListName, String cardName, String targetListName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement sourceCard = getCard(sourceListName, cardName);
+
+        WebElement targetListBody = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(getList(targetListName))));
+
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(sourceCard)
+                .moveToElement(targetListBody)
+                .release()
+                .perform();
+
+        return this;
+    }
+
+
+
 
 }

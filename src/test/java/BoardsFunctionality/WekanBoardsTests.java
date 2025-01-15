@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
+import java.util.List;
+
 import static org.example.DriverFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,6 +61,17 @@ public class WekanBoardsTests {
         assertFalse(boardExist);
     }
 
+
+    @Test
+    public void moveBoardTest() {
+        boardsPage.addNewBoard("to_be_moved1");
+        boardsPage.addNewBoard("to_be_moved2");
+        List<String> originalOrder = boardsPage.getBoardOrder();
+
+        boolean boardMoved=boardsPage.movingBoard("to_be_moved2","to_be_moved1").hasBoardOrderChanged(originalOrder);
+
+        assertTrue(boardMoved);
+    }
     @AfterEach
     public void tearDown() {
         if (driver != null) {

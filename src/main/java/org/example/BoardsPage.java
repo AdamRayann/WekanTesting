@@ -1,9 +1,13 @@
 package org.example;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.LoadableComponent;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoardsPage extends LoadableComponent<BoardsPage> {
@@ -135,6 +139,53 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
             return null;
         }
     }
+
+    public BoardsPage movingBoard(String boardName, String targetBoardName) {
+        String boardId = getBoardId(boardName);
+        String targetBoardId = getBoardId(targetBoardName);
+
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            WebElement sourceBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("a.js-open-board[href='" + boardId + "']")));
+
+            WebElement targetBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("a.js-open-board[href='" + targetBoardId + "']")));
+
+            Actions actions = new Actions(driver);
+            actions.clickAndHold(sourceBoard)
+                    .moveToElement(targetBoard)
+                    .release()
+                    .perform();
+
+            return this;
+
+        } catch (NoSuchElementException | TimeoutException e) {
+            System.err.println("Error moving board '" + boardName + "': " + e.getMessage());
+            return null;
+        }
+    }
+    public List<String> getBoardOrder() {
+        List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
+        List<String> boardNames = new ArrayList<>();
+
+        for (WebElement board : boards) {
+            String boardName = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p")).getText();
+            boardNames.add(boardName);
+        }
+
+        return boardNames;
+    }
+
+    public boolean hasBoardOrderChanged(List<String> originalOrder) {
+        List<String> currentOrder = getBoardOrder();
+
+        return !currentOrder.equals(originalOrder);
+    }
+
+
+
 
 
 }
