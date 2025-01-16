@@ -132,8 +132,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
             WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.cssSelector("a.js-open-board[href='" + boardId + "']")));
 
-            WebElement archiveIcon = wait.until(ExpectedConditions.elementToBeClickable(
-                    boardElement.findElement(By.cssSelector("i.fa.js-archive-board"))));
+            WebElement archiveIcon = boardElement.findElement(By.cssSelector("i.fa-archive"));
 
             archiveIcon.click();
 
