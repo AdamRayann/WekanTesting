@@ -29,7 +29,8 @@ public class WekanBoardsTests {
     @BeforeEach
     public void setUp() throws Exception {
         driver=getDriver();
-        driver.get("http://localhost:5000/");
+        //driver.get("http://localhost:5000/");
+        driver.get("https://17e0-84-110-182-34.ngrok-free.app/sign-in");
         skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
         boardsPage = loginPage.signIn();
