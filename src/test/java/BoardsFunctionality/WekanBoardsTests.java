@@ -65,6 +65,7 @@ public class WekanBoardsTests {
     @Test
     public void moveBoardTest() {
         boardsPage.addNewBoard("to_be_moved1");
+        boardsPage.addNewBoard("board");
         boardsPage.addNewBoard("to_be_moved2");
         List<String> originalOrder = boardsPage.getBoardOrder();
 
