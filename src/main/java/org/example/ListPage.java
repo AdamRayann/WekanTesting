@@ -237,19 +237,24 @@ public ListPage createNewList(String listName) {
 
 
     public ListPage movingList(String sourceListName, String targetListName) {
-
-        WebElement sourceList = driver.findElement(By.id(getList(sourceListName)));
-        WebElement targetList = driver.findElement(By.id(getList(targetListName)));
-
-
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Actions actions = new Actions(driver);
+
+        WebElement sourceList = wait.until(ExpectedConditions.elementToBeClickable(By.id(getList(sourceListName))));
+        WebElement targetList = wait.until(ExpectedConditions.elementToBeClickable(By.id(getList(targetListName))));
+
         actions.clickAndHold(sourceList)
-                .moveByOffset(500, 4).moveToElement(targetList,100,3)
+                .pause(Duration.ofMillis(500))
+                .moveToElement(targetList)
+                .pause(Duration.ofMillis(500))
                 .release()
                 .perform();
 
+        actions.perform();
         return this;
     }
+
+
 
     public List<String> getCardOrder(String listName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
