@@ -237,26 +237,14 @@ public ListPage createNewList(String listName) {
 
 
     public ListPage movingList(String sourceListName, String targetListName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Find source list element by XPath
-        WebElement sourceList = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'list js-list') and .//p[normalize-space(text())='" + sourceListName + "']]")));
-
-        // Find target list element by XPath
-        WebElement targetList = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'list js-list') and .//p[normalize-space(text())='" + targetListName + "']]")));
-
-
+        WebElement sourceList = driver.findElement(By.id(getList(sourceListName)));
+        WebElement targetList = driver.findElement(By.id(getList(targetListName)));
 
 
         Actions actions = new Actions(driver);
         actions.clickAndHold(sourceList)
-                .moveByOffset(200, 3) // Initial movement
-                .pause(Duration.ofMillis(500))
-                .moveByOffset(400, 3) // Move further
-                .pause(Duration.ofMillis(500))
-                .moveToElement(targetList)
+                .moveByOffset(500, 4).moveToElement(targetList,100,3)
                 .release()
                 .perform();
 
@@ -267,7 +255,7 @@ public ListPage createNewList(String listName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement list = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + listName + "']]")));
+                By.id(getList(listName))));
 
         List<WebElement> cards = list.findElements(By.cssSelector("div.minicard"));
         List<String> cardNames = new ArrayList<>();

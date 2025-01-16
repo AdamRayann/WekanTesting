@@ -29,8 +29,8 @@ public class WekanBoardsTests {
     @BeforeEach
     public void setUp() throws Exception {
         driver=getDriver();
-        //driver.get("http://localhost:5000/");
-        driver.get("https://17e0-84-110-182-34.ngrok-free.app/sign-in");
+        driver.get("http://localhost:5000/");
+        //driver.get("https://17e0-84-110-182-34.ngrok-free.app/sign-in");
         skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
         boardsPage = loginPage.signIn();
@@ -56,13 +56,13 @@ public class WekanBoardsTests {
 
     }
 
-//    @Test
-//    public void deleteBoardTest() {
-//        boardsPage.addNewBoard("to_be_deleted");
-//        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
-//
-//        assertFalse(boardExist);
-//    }
+    @Test
+    public void deleteBoardTest() {
+        boardsPage.addNewBoard("to_be_deleted");
+        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
+
+        assertFalse(boardExist);
+    }
 
 
     @Test

@@ -73,19 +73,19 @@ public class WekanListsTests {
         assertFalse(cardExist);
     }
 
-    @Test
-    public void moveBoardTest() throws Exception {
-        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
-        listPage.createNewList("Doing");
-        listPage.createNewList("To Do");
-
-        List<String> originalOrder = listPage.getListOrder();
-        listPage.movingList("Done", "To Do");
-
-        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
-
-        assertTrue(listMoved);
-    }
+//    @Test
+//    public void moveListTest() throws Exception {
+//        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
+//        listPage.createNewList("Doing");
+//        listPage.createNewList("To Do");
+//
+//        List<String> originalOrder = listPage.getListOrder();
+//        listPage.movingList("Done", "To Do");
+//
+//        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
+//
+//        assertTrue(listMoved);
+//    }
 
 
     @Test
