@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 
 import static org.example.DriverFactory.getDriver;
+import static org.example.DriverFactory.skipNgrokPage;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WekanCardsTests {
@@ -25,6 +26,7 @@ public class WekanCardsTests {
     public void setUp(){
         driver=getDriver();
         driver.get("http://localhost:5000/");
+        skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
     }
 //    @Test

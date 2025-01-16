@@ -1,6 +1,7 @@
 package BoardsFunctionality;
 
 import org.example.BoardsPage;
+import org.example.DriverFactory;
 import org.example.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,7 @@ public class WekanBoardsTests {
     public void setUp() throws Exception {
         driver=getDriver();
         driver.get("http://localhost:5000/");
+        skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
         boardsPage = loginPage.signIn();
     }

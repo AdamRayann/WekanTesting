@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.List;
 
 import static org.example.DriverFactory.getDriver;
+import static org.example.DriverFactory.skipNgrokPage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -23,6 +24,7 @@ public class WekanListsTests {
     public void setUp(){
         driver=getDriver();
         driver.get("http://localhost:5000/");
+        skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
     }
     @Test
