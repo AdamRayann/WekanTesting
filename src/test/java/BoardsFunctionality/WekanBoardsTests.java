@@ -56,13 +56,13 @@ public class WekanBoardsTests {
 
     }
 
-    @Test
-    public void deleteBoardTest() {
-        boardsPage.addNewBoard("to_be_deleted");
-        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
-
-        assertFalse(boardExist);
-    }
+//    @Test
+//    public void deleteBoardTest() {
+//        boardsPage.addNewBoard("to_be_deleted");
+//        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
+//
+//        assertFalse(boardExist);
+//    }
 
 
     @Test

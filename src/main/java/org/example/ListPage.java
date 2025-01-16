@@ -26,19 +26,28 @@ public class ListPage  {
 //
 //        return exists(listName);
 //    }
-    public ListPage createNewList(String listName)
-    {
+public ListPage createNewList(String listName) {
+    // Check if the "Add New List" button exists and is displayed
+    if (driver.findElements(addNewListBtn).size() > 0 && driver.findElement(addNewListBtn).isDisplayed()) {
         driver.findElement(addNewListBtn).click();
-        driver.findElement(By.className("list-name-input")).sendKeys(listName);
-        driver.findElement(By.className("confirm")).click();
-        driver.findElement(By.className("js-close-inlined-form")).click();
-        if (exists(listName)){
-
-            return this;
-        }
-        throw new RuntimeException("createNewList failed , the listName doesn't exist");
-
     }
+    else {
+        System.out.println("Add New List button is already pressed");
+    }
+
+    // Enter the list name and confirm the creation
+    driver.findElement(By.className("list-name-input")).sendKeys(listName);
+    driver.findElement(By.className("confirm")).click();
+    driver.findElement(By.className("js-close-inlined-form")).click();
+
+    // Verify if the list was created successfully
+    if (exists(listName)) {
+        return this;
+    }
+
+    throw new RuntimeException("createNewList failed, the listName doesn't exist");
+}
+
 
 
     //for lists
@@ -230,10 +239,16 @@ public class ListPage  {
     public ListPage movingList(String sourceListName, String targetListName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
+        // Find source list element by XPath
         WebElement sourceList = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + sourceListName + "']]")));
+                By.xpath("//div[contains(@class, 'list js-list') and .//p[normalize-space(text())='" + sourceListName + "']]")));
+
+        // Find target list element by XPath
         WebElement targetList = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'list js-list') and .//p[text()='" + targetListName + "']]")));
+                By.xpath("//div[contains(@class, 'list js-list') and .//p[normalize-space(text())='" + targetListName + "']]")));
+
+
+
 
         Actions actions = new Actions(driver);
         actions.clickAndHold(sourceList)

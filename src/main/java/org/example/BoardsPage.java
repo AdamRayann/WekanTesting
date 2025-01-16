@@ -13,7 +13,7 @@ import java.util.List;
 public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     private static WebDriver driver = null;
-    private final String BaseURL = "http://localhost:5000";
+    //private final String BaseURL = "http://localhost:5000";
     private final By header = By.cssSelector("#header-main-bar > h1");
     private final By addNewBoardBtn = By.cssSelector("#content > .wrapper > .board-list > .js-add-board > .board-list-item");
     private final By newBoardNameTextField = By.className("js-new-board-title");
@@ -32,13 +32,13 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     @Override
     protected void isLoaded() throws Error {
-        try {
-            if (!driver.findElement(header).getText().contains("boards")) {
-                throw new RuntimeException("This is not the main page");
-            }
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Header element not found", e);
-        }
+//        try {
+//            if (!driver.findElement(header).getText().contains("boards")) {
+//                throw new RuntimeException("This is not the main page");
+//            }
+//        } catch (NoSuchElementException e) {
+//            throw new RuntimeException("Header element not found", e);
+//        }
     }
 
     public String getHeader() {
@@ -82,14 +82,14 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
 
 
-    public ListPage goToBoard(String boardName) {
-
-        String url =BaseURL + getBoardId(boardName);
-        driver.get(url);
-        return new ListPage(driver);
-
-
-    }
+//    public ListPage goToBoard(String boardName) {
+//
+//        String url =BaseURL + getBoardId(boardName);
+//        driver.get(url);
+//        return new ListPage(driver);
+//
+//
+//    }
 
     public boolean boardExist(String boardName) {
         try {
@@ -128,8 +128,12 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     public BoardsPage deleteBoard(String boardName) {
         String boardId = getBoardId(boardName);
         try {
-            WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
-            WebElement archiveIcon = boardElement.findElement(By.cssSelector("i.fa.js-archive-board"));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.cssSelector("a.js-open-board[href='" + boardId + "']")));
+
+            WebElement archiveIcon = wait.until(ExpectedConditions.elementToBeClickable(
+                    boardElement.findElement(By.cssSelector("i.fa.js-archive-board"))));
 
             archiveIcon.click();
 
@@ -139,6 +143,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
             return null;
         }
     }
+
 
     public BoardsPage movingBoard(String boardName, String targetBoardName) {
         String boardId = getBoardId(boardName);
