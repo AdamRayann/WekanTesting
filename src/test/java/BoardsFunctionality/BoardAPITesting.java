@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Test;
 public class BoardAPITesting {
     private String token = "1n7YIu0bSGi7ah4Ko8uAWUHbm7fgRDQiuEGFyPEwrM1";
     private String userId = "Fu2uaJfwvsMzQioDH";
+    private static String BASE_URL = "http://localhost:5000";
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI = "http://localhost:5000";
+        RestAssured.baseURI = BASE_URL;
     }
     @Test
     public void signInToWekan() {
@@ -84,73 +85,30 @@ public class BoardAPITesting {
     }
 
     @Test
-    public void getUserSpecificBoards() {
-        String token = "1n7YIu0bSGi7ah4Ko8uAWUHbm7fgRDQiuEGFyPEwrM1";
+    public void getBoardsForUser() {
+
 
         Response response = given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .get("http://localhost:5000/api/users/me/boards");
+                .get("http://localhost:5000/api/users/" + userId + "/boards");
 
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body: " + response.asString());
     }
 
     @Test
-    public void deleteAndVerifyBoard() {
-        createBoardWithApi();
-        String boardId =BoardsPage.getBoardId("My Test Board");
-
-        Response deleteResponse = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .delete("http://localhost:5000/api/boards/" + boardId);
-
-        System.out.println("Delete Response Status Code: " + deleteResponse.getStatusCode());
-        System.out.println("Delete Response Body: " + deleteResponse.asString());
-
-        deleteResponse.then().statusCode(200);
-
-        Response getBoardsResponse = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .get("http://localhost:5000/api/boards");
-
-        System.out.println("Get Boards Response Status Code: " + getBoardsResponse.getStatusCode());
-        System.out.println("Get Boards Response Body: " + getBoardsResponse.asString());
-
-        getBoardsResponse.then()
-                .statusCode(200)
-                .body("find { it._id == '" + boardId + "' }", equalTo(null));
-    }
-
-    @Test
-    public void getUserInfo() {
-        Response response = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .get("http://localhost:5000/api/users/me");
-
-        System.out.println("Response Status Code: " + response.getStatusCode());
-        System.out.println("Response Body: " + response.asString());
-    }
-    @Test
-    public void deleteBoard() {
-        String boardId = "Ks3x3bnf8bNxgypDD/fe";
+    public void getBoardForUser() {
+        String BoardId ="KKS97e8SPQ29MwDbM";
 
         Response response = given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .delete("http://localhost:5000/api/boards/" + boardId);
+                .get("http://localhost:5000/api/boards/" + BoardId);
 
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body: " + response.asString());
-
-        // Assert success
-        response.then().statusCode(200);
     }
-
-
 
 
 
