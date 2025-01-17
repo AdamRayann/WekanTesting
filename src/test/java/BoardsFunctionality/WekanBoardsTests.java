@@ -70,7 +70,6 @@ public class WekanBoardsTests {
     @Test
     public void moveBoardTest() throws InterruptedException {
         boardsPage.addNewBoard("to_be_moved1");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         boardsPage.addNewBoard("board");
         boardsPage.addNewBoard("to_be_moved2");
         List<String> originalOrder = boardsPage.getBoardOrder();
