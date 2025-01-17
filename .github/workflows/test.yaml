@@ -114,13 +114,14 @@ jobs:
         run: |
           export GRID_URL=${{ github.event.inputs.grid_url }}
           DEVICE_TYPE=""
-          
-          if ${{ github.event.inputs.pc_device }}; then
+  
+          if [ "${{ github.event.inputs.pc_device }}" == "true" ]; then
             DEVICE_TYPE="pc"
-          elif ${{ github.event.inputs.tablet_device }}; then
+          elif [ "${{ github.event.inputs.tablet_device }}" == "true" ]; then
             DEVICE_TYPE="tablet"
-          elif ${{ github.event.inputs.phone_device }}; then
+          elif [ "${{ github.event.inputs.phone_device }}" == "true" ]; then
             DEVICE_TYPE="phone"
           fi
-          
-          mvn test -Dtest=ResponsiveDesignTests -Ddevice.type=$DEVICE_TYPE -Dgrid.url=$GRID_URL
+  
+          echo "Running tests for device type: $DEVICE_TYPE"
+          mvn test -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
