@@ -72,8 +72,6 @@ public ListPage createNewList(String listName) {
     public ListPage delete(String listName)
     {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
-        if (webElements.isEmpty())
-            return null;
         for (WebElement webElement : webElements)
         {
             try {
@@ -236,21 +234,23 @@ public ListPage createNewList(String listName) {
     }
 
 
-    public ListPage movingList(String sourceListName, String targetListName) {
+    public ListPage movingList(String sourceListName, String targetListName) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Actions actions = new Actions(driver);
+        Thread.sleep(1000);
+        WebElement sourceList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(getList(sourceListName))));
+        WebElement targetList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(getList(targetListName))));
 
-        WebElement sourceList = wait.until(ExpectedConditions.elementToBeClickable(By.id(getList(sourceListName))));
-        WebElement targetList = wait.until(ExpectedConditions.elementToBeClickable(By.id(getList(targetListName))));
+        wait.until(ExpectedConditions.elementToBeClickable(sourceList));
+        wait.until(ExpectedConditions.elementToBeClickable(targetList));
 
         actions.clickAndHold(sourceList)
-                .pause(Duration.ofMillis(500))
+                .pause(Duration.ofMillis(500)) // Pause for stability
                 .moveToElement(targetList)
                 .pause(Duration.ofMillis(500))
                 .release()
                 .perform();
 
-        actions.perform();
         return this;
     }
 
