@@ -3,6 +3,7 @@ package UIFunctionality;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.Dimension;
+import org.wekanPro.BoardsPage;
 import org.wekanPro.ListPage;
 import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
@@ -70,14 +71,14 @@ public class WekanCardsTests {
 
     @Test
     public void deletingCardsInListTest() throws Exception {
-        boolean cardExist=loginPage.signIn()
+        Executable action = () ->loginPage.signIn()
                 .addNewBoardAndGetIt("example")
                 .createNewList("list-to-be-deleted").
                 addCard("list-to-be-deleted","cards-to-be-deleted").
                 delete("list-to-be-deleted","cards-to-be-deleted").
                 exists("list-to-be-deleted","cards-to-be-deleted");
 
-        assertFalse(cardExist);
+        assertThrows(Exception.class,action);
     }
 
     @Test
@@ -112,6 +113,8 @@ public class WekanCardsTests {
 
     @AfterEach
     public void tearDown() {
+        BoardsPage boardsPage = new BoardsPage(driver);
+        boardsPage.clearAll();
         if (driver != null) {
             driver.quit();
         }

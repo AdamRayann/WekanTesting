@@ -2,6 +2,7 @@ package UIFunctionality;
 
 import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.Dimension;
+import org.wekanPro.BoardsPage;
 import org.wekanPro.ListPage;
 import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
@@ -107,18 +108,12 @@ public class WekanListsTests {
     }
 
 
-//    @Test
-//    public void editListNameTest() throws Exception {
-//        synchronized (this) {
-//            assertTrue(loginPage.signIn()
-//                    .addNewBoardAndGetIt("example")
-//                    .createNewList("list").;
-//
-//        }
-//    }
+
 
     @AfterEach
     public void tearDown() {
+        BoardsPage boardsPage = new BoardsPage(driver);
+        boardsPage.clearAll();
         if (driver != null) {
             driver.quit();
         }
