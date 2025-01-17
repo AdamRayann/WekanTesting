@@ -118,6 +118,22 @@ public class WekanBoardsTests {
 //    }
 
 
+    @Test
+    public void boardEmptyName() throws InterruptedException {
+
+
+        boardsPage.addNewBoard("board1");
+        boardsPage.addNewBoard("board2");
+        boardsPage.addNewBoard("board3");
+        List<String> originalOrder = boardsPage.getBoardOrder();
+
+        boolean boardMoved=boardsPage.movingBoard("board3","board1").hasBoardOrderChanged(originalOrder);
+
+        assertTrue(boardMoved);
+    }
+
+
+
 
 
 
