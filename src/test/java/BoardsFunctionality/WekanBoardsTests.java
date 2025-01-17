@@ -70,11 +70,13 @@ public class WekanBoardsTests {
     @Test
     public void moveBoardTest() throws InterruptedException {
         boardsPage.addNewBoard("to_be_moved1");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         boardsPage.addNewBoard("board");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         boardsPage.addNewBoard("to_be_moved2");
         List<String> originalOrder = boardsPage.getBoardOrder();
 
-        boolean boardMoved=boardsPage.movingBoard("to_be_moved2","to_be_moved1").hasBoardOrderChanged(originalOrder);
+        boolean boardMoved=boardsPage.movingBoard("board2","board1").hasBoardOrderChanged(originalOrder);
 
         assertTrue(boardMoved);
     }
