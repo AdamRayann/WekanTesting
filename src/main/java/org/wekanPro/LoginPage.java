@@ -45,7 +45,7 @@ public class LoginPage extends LoadableComponent<LoginPage> {
     protected void isLoaded() throws Error {
         try {
             if (!driver.getCurrentUrl().contains("sign-in")) {
-                throw new RuntimeException("This is not the sign-in page");
+                throw new RuntimeException("This is not the sign-in page" + driver.getCurrentUrl());
             }
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Wrong URL", e);
