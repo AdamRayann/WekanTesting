@@ -144,7 +144,6 @@ public ListPage createNewList(String listName) {
     }
 
     private String getList(String listName) throws InterruptedException {
-        Thread.sleep(2000);
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         if (webElements.isEmpty())
             return null;
