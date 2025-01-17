@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.*;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.BoardsPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

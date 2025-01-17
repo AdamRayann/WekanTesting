@@ -1,4 +1,4 @@
-package org.example;
+package org.wekanPro;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;

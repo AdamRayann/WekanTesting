@@ -1,4 +1,4 @@
-package org.example;
+package org.wekanPro;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -57,7 +57,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return new ListPage(driver);
     }
 
-    public void addNewBoard(String boardName) {
+    public void addNewBoard(String boardName) throws InterruptedException {
         String url = driver.getCurrentUrl();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement addNewBoardButton = wait.until(ExpectedConditions.elementToBeClickable(addNewBoardBtn));
@@ -66,7 +66,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         driver.findElement(newBoardNameTextField).sendKeys(boardName);
         driver.findElement(newBoardCreateBtn).click();
         driver.get(url);
-
+        Thread.sleep(1000);
 
     }
     public static String getBoardId(String boardName) {
@@ -100,8 +100,11 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     public boolean boardExist(String boardName) {
         try {
-            driver.manage().wait(10);
-            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name "));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list")));
+            Thread.sleep(1000);
+            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name"));
+
             for (WebElement board : boards) {
                 if (board.getText().equalsIgnoreCase(boardName)) {
                     return true;
@@ -151,7 +154,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     }
 
 
-    public BoardsPage movingBoard(String boardName, String targetBoardName) {
+    public BoardsPage movingBoard(String boardName, String targetBoardName) throws InterruptedException {
         String boardId = getBoardId(boardName);
         String targetBoardId = getBoardId(targetBoardName);
 

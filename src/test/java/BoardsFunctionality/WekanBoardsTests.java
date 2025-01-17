@@ -1,17 +1,15 @@
 package BoardsFunctionality;
 
-import org.example.BoardsPage;
-import org.example.DriverFactory;
-import org.example.LoginPage;
+import org.wekanPro.BoardsPage;
+import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
-import java.time.Duration;
 import java.util.List;
 
-import static org.example.DriverFactory.*;
+import static org.wekanPro.DriverFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WekanBoardsTests {
@@ -39,7 +37,7 @@ public class WekanBoardsTests {
     }
 
     @Test
-    public void creatingBoardTesting()  {
+    public void creatingBoardTesting() throws InterruptedException {
 
             boardsPage.addNewBoard("example");
             boolean boardExist=boardsPage.boardExist("example");
@@ -59,7 +57,7 @@ public class WekanBoardsTests {
     }
 
     @Test
-    public void deleteBoardTest() {
+    public void deleteBoardTest() throws InterruptedException {
         boardsPage.addNewBoard("to_be_deleted");
         boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
 
@@ -69,14 +67,14 @@ public class WekanBoardsTests {
 
     @Test
     public void moveBoardTest() throws InterruptedException {
-        boardsPage.addNewBoard("to_be_moved1");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
-        boardsPage.addNewBoard("board");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
-        boardsPage.addNewBoard("to_be_moved2");
+
+
+        boardsPage.addNewBoard("board1");
+        boardsPage.addNewBoard("board2");
+        boardsPage.addNewBoard("board3");
         List<String> originalOrder = boardsPage.getBoardOrder();
 
-        boolean boardMoved=boardsPage.movingBoard("board2","board1").hasBoardOrderChanged(originalOrder);
+        boolean boardMoved=boardsPage.movingBoard("board3","board1").hasBoardOrderChanged(originalOrder);
 
         assertTrue(boardMoved);
     }

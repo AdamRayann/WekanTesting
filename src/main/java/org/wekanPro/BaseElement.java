@@ -1,6 +1,4 @@
-package org.example;
-
-import org.openqa.selenium.WebDriver;
+package org.wekanPro;
 
 public class BaseElement {
 //    protected WebDriver driver;

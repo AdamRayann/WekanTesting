@@ -1,12 +1,9 @@
-package org.example;
+package org.wekanPro;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.LoadableComponent;
-
-import java.util.List;
 
 public class CardPage  {
     private final By commentTextField = By.className("js-new-comment-input");

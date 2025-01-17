@@ -1,7 +1,7 @@
 package ListsFunctionality;
 
-import org.example.ListPage;
-import org.example.LoginPage;
+import org.wekanPro.ListPage;
+import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +9,8 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-import static org.example.DriverFactory.getDriver;
-import static org.example.DriverFactory.skipNgrokPage;
+import static org.wekanPro.DriverFactory.getDriver;
+import static org.wekanPro.DriverFactory.skipNgrokPage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,4 +1,4 @@
-package org.example;
+package org.wekanPro;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;

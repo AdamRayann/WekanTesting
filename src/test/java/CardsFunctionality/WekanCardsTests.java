@@ -1,12 +1,12 @@
 package CardsFunctionality;
 
-import org.example.LoginPage;
+import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 
-import static org.example.DriverFactory.getDriver;
-import static org.example.DriverFactory.skipNgrokPage;
+import static org.wekanPro.DriverFactory.getDriver;
+import static org.wekanPro.DriverFactory.skipNgrokPage;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WekanCardsTests {
