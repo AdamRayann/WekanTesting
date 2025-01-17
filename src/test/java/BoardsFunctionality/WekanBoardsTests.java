@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.example.DriverFactory.*;
@@ -68,6 +69,7 @@ public class WekanBoardsTests {
     @Test
     public void moveBoardTest() {
         boardsPage.addNewBoard("to_be_moved1");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         boardsPage.addNewBoard("board");
         boardsPage.addNewBoard("to_be_moved2");
         List<String> originalOrder = boardsPage.getBoardOrder();
