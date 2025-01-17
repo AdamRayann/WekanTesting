@@ -9,14 +9,16 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CardsAPITesting {
+public class CardsAPITests {
 
     private String token = "1n7YIu0bSGi7ah4Ko8uAWUHbm7fgRDQiuEGFyPEwrM1";
     private String userId = "Fu2uaJfwvsMzQioDH";
     private static String BASE_URL = "http://localhost:5000";
     @BeforeAll
     public static void setup() {
+        BASE_URL = System.getProperty("base.url", "http://localhost:5000");
         RestAssured.baseURI = BASE_URL;
+        System.out.println("Base URL: " + BASE_URL);
     }
 
     @Test

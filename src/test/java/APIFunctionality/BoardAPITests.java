@@ -7,13 +7,16 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class BoardAPITesting {
+public class BoardAPITests {
     private String token = "1n7YIu0bSGi7ah4Ko8uAWUHbm7fgRDQiuEGFyPEwrM1";
     private String userId = "Fu2uaJfwvsMzQioDH";
-    private static String BASE_URL = "http://localhost:5000";
+    private static String BASE_URL;
+
     @BeforeAll
     public static void setup() {
+        BASE_URL = System.getProperty("base.url", "http://localhost:5000");
         RestAssured.baseURI = BASE_URL;
+        System.out.println("Base URL: " + BASE_URL);
     }
     @Test
     public void signInToWekan() {
