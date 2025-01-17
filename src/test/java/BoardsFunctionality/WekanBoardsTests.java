@@ -71,6 +71,7 @@ public class WekanBoardsTests {
         boardsPage.addNewBoard("to_be_moved1");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         boardsPage.addNewBoard("board");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         boardsPage.addNewBoard("to_be_moved2");
         List<String> originalOrder = boardsPage.getBoardOrder();
 
