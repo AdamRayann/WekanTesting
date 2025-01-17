@@ -96,8 +96,8 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     public boolean boardExist(String boardName) {
         try {
-            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name"));
-
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name "));
             for (WebElement board : boards) {
                 if (board.getText().equalsIgnoreCase(boardName)) {
                     return true;
