@@ -9,12 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     private static WebDriver driver = null;
-    //private final String BaseURL = "http://localhost:5000";
-    private final String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
+    private final String BaseURL = "http://localhost:5000";
+    //private final String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
     private final By header = By.cssSelector("#header-main-bar > h1");
     private final By addNewBoardBtn = By.cssSelector("#content > .wrapper > .board-list > .js-add-board > .board-list-item");
     private final By newBoardNameTextField = By.className("js-new-board-title");
@@ -116,23 +117,19 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         }
     }
 
-    public boolean addToFavorite(String boardName) {
+    public boolean addToFavorite(String boardName) throws InterruptedException {
         String boardId = getBoardId(boardName);
-        try {
-            WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
-            WebElement starIcon = boardElement.findElement(By.cssSelector("i.fa.js-star-board"));
+        WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
+        WebElement starIcon = boardElement.findElement(By.cssSelector("i.fa.js-star-board"));
 
-            if (!starIcon.getDomAttribute("class").contains("fa-star")) {
-                starIcon.click();
-            }
+        starIcon.click();
 
-            WebElement header = driver.findElement(By.cssSelector("#header-quick-access .header-quick-access-list a[href='" + boardId + "']"));
 
-            return header != null;
+        WebElement header = driver.findElement(By.cssSelector("#header-quick-access .header-quick-access-list a[href='" + boardId + "']"));
 
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        return header != null;
+
+
     }
 
     public BoardsPage deleteBoard(String boardName) {
@@ -169,7 +166,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
             Actions actions = new Actions(driver);
             actions.clickAndHold(sourceBoard)
-                    .moveToElement(targetBoard)
+                    .moveToElement(targetBoard,50,3)
                     .release()
                     .perform();
             driver.get(BaseURL);
@@ -196,6 +193,17 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         List<String> currentOrder = getBoardOrder();
 
         return !currentOrder.equals(originalOrder);
+    }
+
+    public void clearAll() {
+        List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
+
+        for (WebElement board : boards) {
+            String boardName = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p")).getText();
+            deleteBoard(boardName);
+        }
+
+
     }
 
 

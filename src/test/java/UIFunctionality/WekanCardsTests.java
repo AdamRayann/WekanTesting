@@ -1,42 +1,64 @@
-package ListsFunctionality;
+package UIFunctionality;
 
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
 import org.wekanPro.ListPage;
 import org.wekanPro.LoginPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.wekanPro.DriverFactory.getDriver;
 import static org.wekanPro.DriverFactory.skipNgrokPage;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WekanListsTests {
+public class WekanCardsTests {
 
-    private WebDriver driver ;
-    private ListPage listPage;
     private LoginPage loginPage;
+    private WebDriver driver;
 
+    //    @BeforeEach
+//    public void setUp(){
+//        driver=new ChromeDriver();
+//        driver.manage().window().maximize();
+//        driver.get("http://localhost:5000/");
+//        loginPage=new LoginPage(driver).get();
+//        //boardsPage=new BoardsPage(driver).get();
+//    }
     @BeforeEach
     public void setUp(){
         driver=getDriver();
-        //driver.get("http://localhost:5000/");
-        driver.get("https://492c-84-110-182-34.ngrok-free.app/");
+        configureWindowSize(driver);
+        driver.get("http://localhost:5000/");
+        //driver.get("https://17e0-84-110-182-34.ngrok-free.app/sign-in");
         skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
     }
-    @Test
-    public void creatingListTest() throws Exception {
-        boolean listExist=loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list").exists("list");
+    /**
+     * Configures the browser window size based on the device type.
+     * The device type is passed as a system property `device.type` (e.g., pc, tablet, phone).
+     *
+     * @param driver WebDriver instance
+     */
+    private void configureWindowSize(WebDriver driver) {
+        String deviceType = System.getProperty("device.type", "pc").toLowerCase();
 
-        assertTrue(listExist);
-
-
+        switch (deviceType) {
+            case "tablet":
+                driver.manage().window().setSize(new Dimension(768, 1024)); // Tablet resolution
+                break;
+            case "phone":
+                driver.manage().window().setSize(new Dimension(375, 812)); // Phone resolution
+                break;
+            case "pc":
+            default:
+                driver.manage().window().maximize(); // Default to PC (maximize window)
+                break;
+        }
+        System.out.println("Browser window configured for device type: " + deviceType);
     }
 
     @Test
@@ -48,17 +70,6 @@ public class WekanListsTests {
                 exists("list","first_card");
 
         assertTrue(cardExist);
-    }
-
-    @Test
-    public void deletingListTest() throws Exception {
-        boolean listExist=loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list-to-be-deleted").
-                delete("list-to-be-deleted").
-                exists("list-to-be-deleted");
-
-        assertFalse(listExist);
     }
 
     @Test
@@ -74,51 +85,26 @@ public class WekanListsTests {
     }
 
     @Test
-    public void moveListTest() throws Exception {
-        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
-        listPage.createNewList("Doing");
-        listPage.createNewList("To Do");
-
-        List<String> originalOrder = listPage.getListOrder();
-        listPage.movingList("Done", "To Do");
-
-        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
-
-        assertFalse(listMoved);
-    }
-
-
-    @Test
     public void testCardMove() throws Exception {
         String sourceListName = "Doing";
         String targetListName = "To Do";
         String cardToBeMoved = "Task 1";
 
-        listPage=loginPage.signIn().addNewBoardAndGetIt("example");
-        listPage.createNewList(sourceListName).addCard(sourceListName,cardToBeMoved);
-        listPage.createNewList(targetListName);
-
+        ListPage listPage = loginPage.signIn().addNewBoardAndGetIt("example")
+                .createNewList(sourceListName)
+                .addCard(sourceListName,cardToBeMoved)
+                .createNewList(targetListName);
 
         List<String> originalSourceOrder = listPage.getCardOrder(sourceListName);
         List<String> originalTargetOrder = listPage.getCardOrder(targetListName);
 
-        listPage.movingCard(sourceListName, "Task 1", targetListName);
+        listPage.movingCard(sourceListName, cardToBeMoved, targetListName);
 
         assertTrue(listPage.hasCardOrderChanged(sourceListName, originalSourceOrder), "The source list order should have changed.");
         assertTrue(listPage.hasCardOrderChanged(targetListName, originalTargetOrder), "The target list order should have changed.");
     }
 
 
-
-//    @Test
-//    public void editListNameTest() throws Exception {
-//        synchronized (this) {
-//            assertTrue(loginPage.signIn()
-//                    .addNewBoardAndGetIt("example")
-//                    .createNewList("list").;
-//
-//        }
-//    }
 
     @AfterEach
     public void tearDown() {

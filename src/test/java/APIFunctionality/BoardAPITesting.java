@@ -1,4 +1,4 @@
-package BoardsFunctionality;
+package APIFunctionality;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -38,6 +38,9 @@ public class BoardAPITesting {
         String token = response.then().extract().path("token");
         System.out.println("Session Token: " + token);
         this.token=token;
+        response.then()
+                .statusCode(200)
+                .body("id", notNullValue());
 
     }
     @Test
@@ -53,9 +56,12 @@ public class BoardAPITesting {
                 .header("Content-Type", "application/json")
                 .body(loginPayload)
                 .when()
-                .post("http://localhost:5000/users/login");
+                .post(BASE_URL+"/users/login");
 
         System.out.println("Response Body: " + response.asString());
+        response.then()
+                .statusCode(200)
+                .body("id", notNullValue());
     }
 
     @Test
@@ -73,7 +79,7 @@ public class BoardAPITesting {
                 .header("Authorization", "Bearer " + token)
                 .body(boardPayload)
                 .when()
-                .post("http://localhost:5000/api/boards");
+                .post(BASE_URL+"/api/boards");
 
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body: " + response.asString());
@@ -90,10 +96,13 @@ public class BoardAPITesting {
         Response response = given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .get("http://localhost:5000/api/users/" + userId + "/boards");
+                .get(BASE_URL+"/api/users/" + userId + "/boards");
 
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body: " + response.asString());
+        response.then()
+                .statusCode(200)
+                .body("_id", notNullValue());
     }
 
     @Test
@@ -103,10 +112,13 @@ public class BoardAPITesting {
         Response response = given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .get("http://localhost:5000/api/boards/" + BoardId);
+                .get(BASE_URL+"/api/boards/" + BoardId);
 
         System.out.println("Response Status Code: " + response.getStatusCode());
         System.out.println("Response Body: " + response.asString());
+        response.then()
+                .statusCode(200)
+                .body("_id", notNullValue());
     }
 
 
