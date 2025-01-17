@@ -1,5 +1,6 @@
 package UIFunctionality;
 
+import dev.failsafe.function.CheckedRunnable;
 import org.openqa.selenium.Dimension;
 import org.wekanPro.BoardsPage;
 import org.wekanPro.LoginPage;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
@@ -120,18 +122,10 @@ public class WekanBoardsTests {
 
     @Test
     public void boardEmptyName() throws InterruptedException {
+        Executable action = () -> boardsPage.addNewBoard("");
 
-
-        boardsPage.addNewBoard("board1");
-        boardsPage.addNewBoard("board2");
-        boardsPage.addNewBoard("board3");
-        List<String> originalOrder = boardsPage.getBoardOrder();
-
-        boolean boardMoved=boardsPage.movingBoard("board3","board1").hasBoardOrderChanged(originalOrder);
-
-        assertTrue(boardMoved);
+        assertThrows(Exception.class, action);
     }
-
 
 
 
