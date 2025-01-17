@@ -1,6 +1,7 @@
 package UIFunctionality;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.Dimension;
 import org.wekanPro.ListPage;
 import org.wekanPro.LoginPage;
@@ -10,10 +11,9 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.wekanPro.DriverFactory.getDriver;
 import static org.wekanPro.DriverFactory.skipNgrokPage;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WekanCardsTests {
 
@@ -98,6 +98,14 @@ public class WekanCardsTests {
 
         assertTrue(listPage.hasCardOrderChanged(sourceListName, originalSourceOrder), "The source list order should have changed.");
         assertTrue(listPage.hasCardOrderChanged(targetListName, originalTargetOrder), "The target list order should have changed.");
+    }
+    @Test
+    public void boardEmptyName()  {
+        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
+                .createNewList("new list").addCard("new list","")
+                .exists("new list","");
+
+        assertThrows(Exception.class, action);
     }
 
 

@@ -57,7 +57,7 @@ public class WekanBoardsTests {
         System.out.println("Browser window configured for device type: " + deviceType);
     }
     @Test
-    public void creatingBoardTesting() throws InterruptedException {
+    public void creatingBoardTest() throws InterruptedException {
 
             boardsPage.addNewBoard("example");
             boolean boardExist=boardsPage.boardExist("example");
@@ -122,7 +122,7 @@ public class WekanBoardsTests {
 
     @Test
     public void boardEmptyName()  {
-        Executable action = () -> boardsPage.addNewBoard("");
+        Executable action = () -> boardsPage.addNewBoardAndGetIt("").createNewList("new list");
 
         assertThrows(Exception.class, action);
     }

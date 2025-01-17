@@ -1,5 +1,6 @@
 package UIFunctionality;
 
+import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.Dimension;
 import org.wekanPro.ListPage;
 import org.wekanPro.LoginPage;
@@ -10,10 +11,9 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.wekanPro.DriverFactory.getDriver;
 import static org.wekanPro.DriverFactory.skipNgrokPage;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WekanListsTests {
 
@@ -98,7 +98,13 @@ public class WekanListsTests {
         assertFalse(listMoved);
     }
 
+    @Test
+    public void boardEmptyName()  {
+        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
+                .createNewList("").addCard("","new card");
 
+        assertThrows(Exception.class, action);
+    }
 
 
 //    @Test

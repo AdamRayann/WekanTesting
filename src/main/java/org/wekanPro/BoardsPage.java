@@ -58,7 +58,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return new ListPage(driver);
     }
 
-    public void addNewBoard(String boardName) throws InterruptedException {
+    public BoardsPage addNewBoard(String boardName) throws InterruptedException {
         String url = driver.getCurrentUrl();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement addNewBoardButton = wait.until(ExpectedConditions.elementToBeClickable(addNewBoardBtn));
@@ -68,53 +68,40 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         driver.findElement(newBoardCreateBtn).click();
         driver.get(url);
         Thread.sleep(1000);
+        return this;
 
     }
     public static String getBoardId(String boardName) {
-        try {
 
-            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
-            for (WebElement board : boards) {
-                WebElement nameElement = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p"));
-                if (nameElement.getText().equalsIgnoreCase(boardName)) {
 
-                    WebElement linkElement = board.findElement(By.cssSelector("a.js-open-board"));
-                    return linkElement.getDomAttribute("href");
-                }
+        List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
+        for (WebElement board : boards) {
+            WebElement nameElement = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p"));
+            if (nameElement.getText().equalsIgnoreCase(boardName)) {
+
+                WebElement linkElement = board.findElement(By.cssSelector("a.js-open-board"));
+                return linkElement.getDomAttribute("href");
             }
-            return null;
-        } catch (NoSuchElementException e) {
-            return null;
         }
+        return null;
+
     }
 
 
+    public boolean boardExist(String boardName) throws InterruptedException {
 
-//    public ListPage goToBoard(String boardName) {
-//
-//        String url =BaseURL + getBoardId(boardName);
-//        driver.get(url);
-//        return new ListPage(driver);
-//
-//
-//    }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list")));
+        Thread.sleep(1000);
+        List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name"));
 
-    public boolean boardExist(String boardName) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list")));
-            Thread.sleep(1000);
-            List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name"));
-
-            for (WebElement board : boards) {
-                if (board.getText().equalsIgnoreCase(boardName)) {
-                    return true;
-                }
+        for (WebElement board : boards) {
+            if (board.getText().equalsIgnoreCase(boardName)) {
+                return true;
             }
-            return false;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
+
     }
 
     public boolean addToFavorite(String boardName) throws InterruptedException {
@@ -134,7 +121,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     public BoardsPage deleteBoard(String boardName) {
         String boardId = getBoardId(boardName);
-        try {
+
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.cssSelector("a.js-open-board[href='" + boardId + "']")));
@@ -145,9 +132,6 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
             return this;
 
-        } catch (NoSuchElementException e) {
-            return null;
-        }
     }
 
 
@@ -155,27 +139,22 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         String boardId = getBoardId(boardName);
         String targetBoardId = getBoardId(targetBoardName);
 
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-            WebElement sourceBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.cssSelector("a.js-open-board[href='" + boardId + "']")));
+        WebElement sourceBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a.js-open-board[href='" + boardId + "']")));
 
-            WebElement targetBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.cssSelector("a.js-open-board[href='" + targetBoardId + "']")));
+        WebElement targetBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a.js-open-board[href='" + targetBoardId + "']")));
 
-            Actions actions = new Actions(driver);
-            actions.clickAndHold(sourceBoard)
-                    .moveToElement(targetBoard,50,3)
-                    .release()
-                    .perform();
-            driver.get(BaseURL);
-            return this;
+        Actions actions = new Actions(driver);
+        actions.clickAndHold(sourceBoard)
+                .moveToElement(targetBoard,50,3)
+                .release()
+                .perform();
+        driver.get(BaseURL);
+        return this;
 
-        } catch (NoSuchElementException | TimeoutException e) {
-            System.err.println("Error moving board '" + boardName + "': " + e.getMessage());
-            return null;
-        }
     }
     public List<String> getBoardOrder() {
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));

@@ -27,7 +27,6 @@ public class ListPage  {
 //        return exists(listName);
 //    }
 public ListPage createNewList(String listName) {
-    // Check if the "Add New List" button exists and is displayed
     if (driver.findElements(addNewListBtn).size() > 0 && driver.findElement(addNewListBtn).isDisplayed()) {
         driver.findElement(addNewListBtn).click();
     }
@@ -35,12 +34,10 @@ public ListPage createNewList(String listName) {
         System.out.println("Add New List button is already pressed");
     }
 
-    // Enter the list name and confirm the creation
     driver.findElement(By.className("list-name-input")).sendKeys(listName);
     driver.findElement(By.className("confirm")).click();
     driver.findElement(By.className("js-close-inlined-form")).click();
 
-    // Verify if the list was created successfully
     if (exists(listName)) {
         return this;
     }
@@ -50,7 +47,6 @@ public ListPage createNewList(String listName) {
 
 
 
-    //for lists
     public Boolean exists(String listName)
     {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
@@ -58,13 +54,10 @@ public ListPage createNewList(String listName) {
             return false;
         for (WebElement webElement : webElements)
         {
-            try {
                 if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
                     return true;
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
     return false;
     }
@@ -74,7 +67,6 @@ public ListPage createNewList(String listName) {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         for (WebElement webElement : webElements)
         {
-            try {
                 if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
                     webElement.findElement(By.cssSelector(".list-header-menu .js-open-list-menu")).click();
                     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -82,9 +74,7 @@ public ListPage createNewList(String listName) {
                     archiveButton.click();
                     return this;
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
 
         return null;
@@ -113,13 +103,10 @@ public ListPage createNewList(String listName) {
             return false;
         for (WebElement webElement : webElements)
         {
-            try {
                 if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
                     return cardExists(webElement,cardName);
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
         return false;
     }
@@ -132,13 +119,10 @@ public ListPage createNewList(String listName) {
             return false;
         for (WebElement w : webElements)
         {
-            try {
                 if (w.findElement(By.cssSelector("p")).getText().equals(cardName)) {
                     return true;
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
         return false;
     }
@@ -149,13 +133,10 @@ public ListPage createNewList(String listName) {
             return null;
         for (WebElement webElement : webElements)
         {
-            try {
                 if (webElement.findElement(By.cssSelector("p")).getText().equals(listName)) {
                     return webElement.getDomAttribute("id");
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
         return null;
     }
@@ -169,7 +150,6 @@ public ListPage createNewList(String listName) {
             System.out.println("List not found: " + listName);
             return null;
         }
-        try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .js-add-card"))).click();
 
@@ -180,10 +160,7 @@ public ListPage createNewList(String listName) {
             driver.findElement(By.className("js-close-inlined-form")).click();
 
             return this;
-        } catch (TimeoutException e) {
-            System.out.println("Failed to add card: " + e.getMessage());
-            return null;
-        }
+
     }
 
 
@@ -191,23 +168,16 @@ public ListPage createNewList(String listName) {
 
         String listById = getList(listName);
 
-        if (listById == null) {
-            System.out.println("List not found: " + listName);
-            return null;
-        }
-
         List<WebElement> cardElements = driver.findElements(By.cssSelector("#" + listById + " .minicard-wrapper"));
 
         for (WebElement cardElement : cardElements) {
-            try {
+
                 WebElement cardNameElement = cardElement.findElement(By.cssSelector("p"));
                 if (cardNameElement.getText().equals(cardName)) {
 
                     return cardElement;
                 }
-            } catch (NoSuchElementException e) {
-                continue;
-            }
+
         }
 
         return null;
