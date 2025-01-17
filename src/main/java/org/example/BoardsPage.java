@@ -67,6 +67,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         driver.findElement(newBoardCreateBtn).click();
         driver.get(url);
 
+
     }
     public static String getBoardId(String boardName) {
         try {
@@ -99,7 +100,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     public boolean boardExist(String boardName) {
         try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+            driver.manage().wait(10);
             List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name "));
             for (WebElement board : boards) {
                 if (board.getText().equalsIgnoreCase(boardName)) {
