@@ -17,6 +17,7 @@ public class WekanBoardsTests {
     private LoginPage loginPage;
     private WebDriver driver;
     private BoardsPage boardsPage;
+    String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
 
 //    @BeforeEach
 //    public void setUp(){
@@ -30,7 +31,7 @@ public class WekanBoardsTests {
     public void setUp() throws Exception {
         driver=getDriver();
         //driver.get("http://localhost:5000/");
-        driver.get("https://492c-84-110-182-34.ngrok-free.app/");
+        driver.get(BaseURL);
         skipNgrokPage(driver);
         loginPage=new LoginPage(driver).get();
         boardsPage = loginPage.signIn();

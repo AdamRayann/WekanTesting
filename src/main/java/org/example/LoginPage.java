@@ -38,7 +38,8 @@ public class LoginPage extends LoadableComponent<LoginPage> {
     }
     @Override
     protected void load() {
-        String baseURL = "http://localhost:5000/sign-in";
+        //String baseURL = "http://localhost:5000/sign-in";
+        String baseURL = "https://492c-84-110-182-34.ngrok-free.app/";
         driver.get(baseURL);
     }
 

@@ -14,6 +14,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     private static WebDriver driver = null;
     //private final String BaseURL = "http://localhost:5000";
+    private final String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
     private final By header = By.cssSelector("#header-main-bar > h1");
     private final By addNewBoardBtn = By.cssSelector("#content > .wrapper > .board-list > .js-add-board > .board-list-item");
     private final By newBoardNameTextField = By.className("js-new-board-title");
@@ -26,8 +27,10 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     }
     @Override
     protected void load() {
-        String baseURL = "http://localhost:5000/";
-        driver.get(baseURL);
+        //String baseURL = "http://localhost:5000/";
+
+
+        driver.get(BaseURL);
     }
 
     @Override
@@ -162,7 +165,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
                     .moveToElement(targetBoard)
                     .release()
                     .perform();
-
+            driver.get(BaseURL);
             return this;
 
         } catch (NoSuchElementException | TimeoutException e) {
