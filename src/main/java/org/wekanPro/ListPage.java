@@ -90,8 +90,7 @@ public ListPage createNewList(String listName) {
         return null;
     }
 
-    public ListPage delete(String listName,String cardName)
-    {
+    public ListPage delete(String listName,String cardName) throws InterruptedException {
         WebElement card = getCard(listName,cardName);
         if (card==null)
             return null;
@@ -144,8 +143,8 @@ public ListPage createNewList(String listName) {
         return false;
     }
 
-    private String getList(String listName)
-    {
+    private String getList(String listName) throws InterruptedException {
+        Thread.sleep(2000);
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         if (webElements.isEmpty())
             return null;
@@ -164,7 +163,7 @@ public ListPage createNewList(String listName) {
 
 
 
-    public ListPage addCard(String listName, String cardName) {
+    public ListPage addCard(String listName, String cardName) throws InterruptedException {
         String listById = getList(listName);
 
         if (listById == null) {
@@ -189,7 +188,7 @@ public ListPage createNewList(String listName) {
     }
 
 
-    public WebElement getCard(String listName, String cardName) {
+    public WebElement getCard(String listName, String cardName) throws InterruptedException {
 
         String listById = getList(listName);
 
@@ -256,7 +255,7 @@ public ListPage createNewList(String listName) {
 
 
 
-    public List<String> getCardOrder(String listName) {
+    public List<String> getCardOrder(String listName) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement list = wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -273,12 +272,12 @@ public ListPage createNewList(String listName) {
         return cardNames;
     }
 
-    public boolean hasCardOrderChanged(String listName, List<String> originalOrder) {
+    public boolean hasCardOrderChanged(String listName, List<String> originalOrder) throws InterruptedException {
         List<String> currentOrder = getCardOrder(listName);
         return !currentOrder.equals(originalOrder);
     }
 
-    public ListPage movingCard(String sourceListName, String cardName, String targetListName) {
+    public ListPage movingCard(String sourceListName, String cardName, String targetListName) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement sourceCard = getCard(sourceListName, cardName);
