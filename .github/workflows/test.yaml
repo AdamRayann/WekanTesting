@@ -9,15 +9,23 @@ on:
         description: Grid to run tests on (local by default)
         default: http://localhost:4444
 
+      base_url:
+        required: true
+        type: string
+        description: Site's domain (local by default)
+        default: http://localhost:5000
+
       chrome_131_0:
         description: 'Chrome (131.0)'
         required: false
         type: boolean
+        default: true
 
       firefox_133_0:
         description: 'Firefox (133.0)'
         required: false
         type: boolean
+        default: false
 
       pc_device:
         description: 'Run responsiveness test for PC'
@@ -61,11 +69,13 @@ jobs:
         run: |
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
+          export BASE_URL=${{ github.event.inputs.base_url }}
           
-          mvn -q test
+          mvn test -Dtest=WekanBoardsTests
           
           # Tear down grid if exists
           docker stop grid_container || true
+          docker rm -f grid_container || true
 
   TestFirefox_133_0:
     name: Test Firefox 133.0
@@ -90,11 +100,13 @@ jobs:
         run: |
           export BROWSER=firefox
           export GRID_URL=${{ github.event.inputs.grid_url }}
+          export BASE_URL=${{ github.event.inputs.base_url }}
           
           mvn test -Dtest=WekanBoardsTests
           
           # Tear down grid if exists
           docker stop grid_container || true
+          docker rm -f grid_container || true
 
   ResponsiveTests:
     name: Responsive Tests
@@ -113,8 +125,9 @@ jobs:
         if: ${{ github.event.inputs.pc_device == 'true' || github.event.inputs.tablet_device == 'true' || github.event.inputs.phone_device == 'true' }}
         run: |
           export GRID_URL=${{ github.event.inputs.grid_url }}
+          export BASE_URL=${{ github.event.inputs.base_url }}
           DEVICE_TYPE=""
-  
+          
           if [ "${{ github.event.inputs.pc_device }}" == "true" ]; then
             DEVICE_TYPE="pc"
           elif [ "${{ github.event.inputs.tablet_device }}" == "true" ]; then
@@ -122,6 +135,6 @@ jobs:
           elif [ "${{ github.event.inputs.phone_device }}" == "true" ]; then
             DEVICE_TYPE="phone"
           fi
-  
+          
           echo "Running tests for device type: $DEVICE_TYPE"
           mvn test -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests

@@ -20,15 +20,19 @@ public class WekanListsTests {
     private WebDriver driver ;
     private ListPage listPage;
     private LoginPage loginPage;
+    private String BaseURL;
+
 
     @BeforeEach
     public void setUp(){
-        driver=getDriver();
+        BaseURL = System.getProperty("base.url", "http://localhost:5000/");
+        driver = getDriver();
         configureWindowSize(driver);
-        driver.get("http://localhost:5000/");
-        //driver.get("https://492c-84-110-182-34.ngrok-free.app/");
-        skipNgrokPage(driver);
-        loginPage=new LoginPage(driver).get();
+        driver.get(BaseURL);
+        if (!BaseURL.equals("http://localhost:5000/"))
+            skipNgrokPage(driver);
+        loginPage = new LoginPage(driver).get();
+
     }
 
 

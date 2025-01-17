@@ -17,16 +17,17 @@ public class WekanBoardsTests {
     private LoginPage loginPage;
     private WebDriver driver;
     private BoardsPage boardsPage;
-    String BaseURL = "http://localhost:5000/";
-    //String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
+    private String BaseURL;
 
     @BeforeEach
     public void setUp() throws Exception {
-        driver=getDriver();
+        BaseURL = System.getProperty("base.url", "http://localhost:5000/");
+        driver = getDriver();
         configureWindowSize(driver);
         driver.get(BaseURL);
-        skipNgrokPage(driver);
-        loginPage=new LoginPage(driver).get();
+        if (!BaseURL.equals("http://localhost:5000/"))
+            skipNgrokPage(driver);
+        loginPage = new LoginPage(driver).get();
         boardsPage = loginPage.signIn();
     }
 

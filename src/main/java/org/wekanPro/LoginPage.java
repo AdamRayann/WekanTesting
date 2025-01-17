@@ -13,31 +13,29 @@ import java.time.Duration;
 
 public class LoginPage extends LoadableComponent<LoginPage> {
 
-    private final WebDriver driver ;
+    private final WebDriver driver;
     private final Accounts.Account account;
-
-    private BoardsPage boardsPage;
-
     private final By userNameTextField = By.id("at-field-username_and_email");
     private final By passwordTextField = By.id("at-field-password");
     private final By signInBtn = By.id("at-btn");
-    public LoginPage(WebDriver driver, Accounts.Account account)
-    {
-        this.driver=driver;
+    private final String baseURL;
+
+    public LoginPage(WebDriver driver, Accounts.Account account) {
+        this.driver = driver;
         this.account = account;
+        this.baseURL = System.getProperty("base.url", "http://localhost:5000/") + "sign-in";
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
-    public LoginPage(WebDriver driver)
-    {
-        this.driver=driver;
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
         this.account = Accounts.account1;
+        this.baseURL = System.getProperty("base.url", "http://localhost:5000/") + "sign-in";
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
+
     @Override
     protected void load() {
-        String baseURL = "http://localhost:5000/sign-in";
-        //String baseURL = "https://492c-84-110-182-34.ngrok-free.app/";
         driver.get(baseURL);
     }
 
@@ -45,28 +43,26 @@ public class LoginPage extends LoadableComponent<LoginPage> {
     protected void isLoaded() throws Error {
         try {
             if (!driver.getCurrentUrl().contains("sign-in")) {
-                throw new RuntimeException("This is not the sign-in page");
+                throw new IllegalStateException("The current page is not the sign-in page");
             }
         } catch (NoSuchElementException e) {
-            throw new RuntimeException("Wrong URL", e);
+            throw new IllegalStateException("Error verifying the sign-in page URL", e);
         }
     }
 
     public BoardsPage signIn() throws Exception {
-
-        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement usernameField = wait1.until(ExpectedConditions.elementToBeClickable(userNameTextField));
-        usernameField.click();
-        driver.findElement(userNameTextField).sendKeys(account.getUserName());
-        driver.findElement(passwordTextField).sendKeys(account.getPassword());
-        driver.findElement(signInBtn).click();
-
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement headerElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#header-main-bar > h1")));
+
+        WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(userNameTextField));
+        usernameField.click();
+        usernameField.sendKeys(account.getUserName());
+        WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(passwordTextField));
+        passwordField.sendKeys(account.getPassword());
+
+        WebElement signInButton = wait.until(ExpectedConditions.elementToBeClickable(signInBtn));
+        signInButton.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#header-main-bar > h1")));
 
         return new BoardsPage(driver);
-
-
     }
 }

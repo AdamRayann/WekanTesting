@@ -19,23 +19,19 @@ public class WekanCardsTests {
 
     private LoginPage loginPage;
     private WebDriver driver;
+    private String BaseURL;
 
-    //    @BeforeEach
-//    public void setUp(){
-//        driver=new ChromeDriver();
-//        driver.manage().window().maximize();
-//        driver.get("http://localhost:5000/");
-//        loginPage=new LoginPage(driver).get();
-//        //boardsPage=new BoardsPage(driver).get();
-//    }
+
     @BeforeEach
     public void setUp(){
-        driver=getDriver();
+        BaseURL = System.getProperty("base.url", "http://localhost:5000/");
+        driver = getDriver();
         configureWindowSize(driver);
-        driver.get("http://localhost:5000/");
-        //driver.get("https://17e0-84-110-182-34.ngrok-free.app/sign-in");
-        skipNgrokPage(driver);
-        loginPage=new LoginPage(driver).get();
+        driver.get(BaseURL);
+        if (!BaseURL.equals("http://localhost:5000/"))
+            skipNgrokPage(driver);
+        loginPage = new LoginPage(driver).get();
+
     }
     /**
      * Configures the browser window size based on the device type.
