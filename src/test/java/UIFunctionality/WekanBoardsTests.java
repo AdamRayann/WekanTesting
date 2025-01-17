@@ -121,7 +121,7 @@ public class WekanBoardsTests {
 
 
     @Test
-    public void boardEmptyName() throws InterruptedException {
+    public void boardEmptyName()  {
         Executable action = () -> boardsPage.addNewBoard("");
 
         assertThrows(Exception.class, action);
