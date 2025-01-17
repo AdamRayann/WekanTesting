@@ -59,7 +59,10 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     public void addNewBoard(String boardName) {
         String url = driver.getCurrentUrl();
-        driver.findElement(addNewBoardBtn).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement addNewBoardButton = wait.until(ExpectedConditions.elementToBeClickable(addNewBoardBtn));
+
+        addNewBoardButton.click();
         driver.findElement(newBoardNameTextField).sendKeys(boardName);
         driver.findElement(newBoardCreateBtn).click();
         driver.get(url);
