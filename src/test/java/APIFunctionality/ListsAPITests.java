@@ -3,6 +3,7 @@ package APIFunctionality;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,7 +26,28 @@ public class ListsAPITests {
         System.out.println("Base URL: " + BASE_URL);
     }
 
+    @BeforeEach
+    public void authenticate() {
+        String loginPayload = """
+            {
+                "username": "admin1",
+                "password": "admin1"
+            }
+            """;
 
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .body(loginPayload)
+                .when()
+                .post("/users/login");
+
+        response.then().statusCode(200);
+
+        token = response.then().extract().path("token");
+        userId = response.then().extract().path("id");
+        System.out.println("Session Token: " + token);
+        System.out.println("User ID: " + userId);
+    }
     @Test
     public void getAllListsInBoard() {
         String boardId = "RyAgJa3zh3cb4ceGd";
