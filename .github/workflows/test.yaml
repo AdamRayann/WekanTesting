@@ -74,7 +74,8 @@ jobs:
           
           
           echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
-          mvn test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+
 
           # Tear down grid if exists
           docker stop grid_container || true
