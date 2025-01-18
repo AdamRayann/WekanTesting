@@ -26,7 +26,7 @@ jobs:
       - name: Run API Tests
         run: |
           export BASE_URL=${{ github.event.inputs.base_url }}
-          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=BoardAPITests
-          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=CardsAPITests
-          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=ListsAPITests
+          mvn -q test -Dbase_url=${{ github.event.inputs.BASE_URL }} -Dtest=BoardAPITests
+          mvn -q test -Dbase_url=${{ github.event.inputs.BASE_URL }} -Dtest=CardsAPITests
+          mvn -q test -Dbase_url=${{ github.event.inputs.BASE_URL }} -Dtest=ListsAPITests
 
