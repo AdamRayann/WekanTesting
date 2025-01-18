@@ -112,7 +112,7 @@ public class WekanCardsTests {
 
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
         BoardsPage boardsPage = new BoardsPage(driver);
         boardsPage.clearAll();
         if (driver != null) {
