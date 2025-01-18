@@ -16,7 +16,7 @@ public class CardPage  {
     }
 
     public boolean addComment(String comment) {
-        try {
+
             WebElement commentField = driver.findElement(commentTextField);
 
             commentField.clear();
@@ -25,10 +25,7 @@ public class CardPage  {
             driver.findElement(addCommentBtn).click();
 
             return true;
-        } catch (NoSuchElementException e) {
-            System.out.println("Failed to add comment: " + e.getMessage());
-            return false;
-        }
+
     }
 
 //    private boolean commentExist(String comment) {

@@ -26,7 +26,9 @@ public class ListPage  {
 //
 //        return exists(listName);
 //    }
-public ListPage createNewList(String listName) {
+public ListPage createNewList(String listName) throws InterruptedException {
+    Thread.sleep(1000);
+
     if (driver.findElements(addNewListBtn).size() > 0 && driver.findElement(addNewListBtn).isDisplayed()) {
         driver.findElement(addNewListBtn).click();
     }
@@ -47,8 +49,9 @@ public ListPage createNewList(String listName) {
 
 
 
-    public Boolean exists(String listName)
-    {
+    public Boolean exists(String listName) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         if (webElements.isEmpty())
             return false;
@@ -62,8 +65,9 @@ public ListPage createNewList(String listName) {
     return false;
     }
 
-    public ListPage delete(String listName)
-    {
+    public ListPage delete(String listName) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         for (WebElement webElement : webElements)
         {
@@ -81,6 +85,8 @@ public ListPage createNewList(String listName) {
     }
 
     public ListPage delete(String listName,String cardName) throws InterruptedException {
+        Thread.sleep(1000);
+
         WebElement card = getCard(listName,cardName);
         if (card==null)
             return null;
@@ -96,9 +102,10 @@ public ListPage createNewList(String listName) {
 
 
     //for cards
-    public Boolean exists(String listName,String cardName)
-    {
+    public Boolean exists(String listName,String cardName) throws InterruptedException {
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
+        Thread.sleep(1000);
+
         if (webElements.isEmpty())
             return false;
         for (WebElement webElement : webElements)
@@ -112,8 +119,9 @@ public ListPage createNewList(String listName) {
     }
 
 
-    private Boolean cardExists(WebElement webElement,String cardName)
-    {
+    private Boolean cardExists(WebElement webElement,String cardName) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<WebElement> webElements = webElement.findElements(By.className("minicards"));
         if (webElements.isEmpty())
             return false;
@@ -128,6 +136,8 @@ public ListPage createNewList(String listName) {
     }
 
     private String getList(String listName) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<WebElement> webElements = driver.findElements(By.className("js-list"));
         if (webElements.isEmpty())
             return null;
@@ -144,6 +154,8 @@ public ListPage createNewList(String listName) {
 
 
     public ListPage addCard(String listName, String cardName) throws InterruptedException {
+        Thread.sleep(1000);
+
         String listById = getList(listName);
 
         if (listById == null) {
@@ -165,6 +177,8 @@ public ListPage createNewList(String listName) {
 
 
     public WebElement getCard(String listName, String cardName) throws InterruptedException {
+        Thread.sleep(1000);
+
 
         String listById = getList(listName);
 
@@ -183,13 +197,17 @@ public ListPage createNewList(String listName) {
         return null;
     }
 
-    public boolean hasListOrderChanged(List<String> originalOrder) {
+    public boolean hasListOrderChanged(List<String> originalOrder) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<String> currentOrder = getListOrder();
 
         return !currentOrder.equals(originalOrder);
     }
 
-    public List<String> getListOrder() {
+    public List<String> getListOrder() throws InterruptedException {
+        Thread.sleep(1000);
+
         List<WebElement> lists = driver.findElements(By.cssSelector("div.list.js-list"));
         List<String> listNames = new ArrayList<>();
 
@@ -203,6 +221,8 @@ public ListPage createNewList(String listName) {
 
 
     public ListPage movingList(String sourceListName, String targetListName) throws InterruptedException {
+        Thread.sleep(1000);
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Actions actions = new Actions(driver);
         Thread.sleep(1000);
@@ -225,6 +245,8 @@ public ListPage createNewList(String listName) {
 
 
     public List<String> getCardOrder(String listName) throws InterruptedException {
+        Thread.sleep(1000);
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement list = wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -242,11 +264,15 @@ public ListPage createNewList(String listName) {
     }
 
     public boolean hasCardOrderChanged(String listName, List<String> originalOrder) throws InterruptedException {
+        Thread.sleep(1000);
+
         List<String> currentOrder = getCardOrder(listName);
         return !currentOrder.equals(originalOrder);
     }
 
     public ListPage movingCard(String sourceListName, String cardName, String targetListName) throws InterruptedException {
+        Thread.sleep(1000);
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement sourceCard = getCard(sourceListName, cardName);
