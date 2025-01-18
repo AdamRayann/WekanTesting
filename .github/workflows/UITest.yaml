@@ -63,24 +63,31 @@ jobs:
       - name: Launch standalone grid - Chrome
         if: ${{ contains(github.event.inputs.grid_url, 'localhost') }}
         run: |
-          docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
-
-      - name: Run Tests
-        run: |
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
-          export DEVICE_TYPE=pc
           
+          DEVICE_TYPES=()
+          if [ "${{ github.event.inputs.pc_device }}" == "true" ]; then
+            DEVICE_TYPES+=("pc")
+          fi
+          if [ "${{ github.event.inputs.tablet_device }}" == "true" ]; then
+            DEVICE_TYPES+=("tablet")
+          fi
+          if [ "${{ github.event.inputs.phone_device }}" == "true" ]; then
+            DEVICE_TYPES+=("phone")
+          fi
           
-          echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests
+          for DEVICE_TYPE in "${DEVICE_TYPES[@]}"; do
+            echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests
+          done
           
           # Tear down grid if exists
           docker stop grid_container || true
-
+          docker rm -f grid_container || true
   TestFirefox_133_0:
     name: Test Firefox 133.0
     runs-on: ubuntu-latest
@@ -106,11 +113,24 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
           
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests
+          DEVICE_TYPES=()
+          if [ "${{ github.event.inputs.pc_device }}" == "true" ]; then
+            DEVICE_TYPES+=("pc")
+          fi
+          if [ "${{ github.event.inputs.tablet_device }}" == "true" ]; then
+            DEVICE_TYPES+=("tablet")
+          fi
+          if [ "${{ github.event.inputs.phone_device }}" == "true" ]; then
+            DEVICE_TYPES+=("phone")
+          fi
+          
+          for DEVICE_TYPE in "${DEVICE_TYPES[@]}"; do
+            echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests
+            mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests
+          done
           
           # Tear down grid if exists
           docker stop grid_container || true
           docker rm -f grid_container || true
-
