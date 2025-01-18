@@ -50,112 +50,119 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     }
 
 
-    public ListPage addNewBoardAndGetIt(String boardName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        WebElement addBoardButton = wait.until(ExpectedConditions.elementToBeClickable(addNewBoardBtn));
-        addBoardButton.click();
-
-        WebElement boardNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(newBoardNameTextField));
-        boardNameField.sendKeys(boardName);
-
-        WebElement createBoardButton = wait.until(ExpectedConditions.elementToBeClickable(newBoardCreateBtn));
-        createBoardButton.click();
-        wait.until(ExpectedConditions.urlContains("/b/"));
-
+    public ListPage addNewBoardAndGetIt(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
+        driver.findElement(addNewBoardBtn).click();
+        driver.findElement(newBoardNameTextField).sendKeys(boardName);
+        driver.findElement(newBoardCreateBtn).click();
+        Thread.sleep(1000);
         return new ListPage(driver);
     }
 
-    public BoardsPage addNewBoard(String boardName) {
+    public BoardsPage addNewBoard(String boardName) throws InterruptedException {
         String url = driver.getCurrentUrl();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
         WebElement addNewBoardButton = wait.until(ExpectedConditions.elementToBeClickable(addNewBoardBtn));
+
         addNewBoardButton.click();
-
-        WebElement boardNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(newBoardNameTextField));
-        boardNameField.sendKeys(boardName);
-
-        WebElement createBoardButton = wait.until(ExpectedConditions.elementToBeClickable(newBoardCreateBtn));
-        createBoardButton.click();
-
-        wait.until(ExpectedConditions.urlToBe(url)); // Ensure the page reloads
+        driver.findElement(newBoardNameTextField).sendKeys(boardName);
+        driver.findElement(newBoardCreateBtn).click();
+        driver.get(url);
+        Thread.sleep(1000);
         return this;
-    }
 
-    public static String getBoardId(String boardName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list li.js-board")));
+    }
+    public static String getBoardId(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
 
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
         for (WebElement board : boards) {
             WebElement nameElement = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p"));
             if (nameElement.getText().equalsIgnoreCase(boardName)) {
+
                 WebElement linkElement = board.findElement(By.cssSelector("a.js-open-board"));
                 return linkElement.getDomAttribute("href");
             }
         }
         return null;
+
     }
 
-    public boolean boardExist(String boardName) {
+
+    public boolean boardExist(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list")));
-
+        Thread.sleep(1000);
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list span.board-list-item-name"));
+
         for (WebElement board : boards) {
             if (board.getText().equalsIgnoreCase(boardName)) {
                 return true;
             }
         }
         return false;
+
     }
 
-    public boolean addToFavorite(String boardName) {
+    public boolean addToFavorite(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a.js-open-board[href='" + boardId + "']")));
+        WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
         WebElement starIcon = boardElement.findElement(By.cssSelector("i.fa.js-star-board"));
+
         starIcon.click();
 
-        WebElement header = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#header-quick-access .header-quick-access-list a[href='" + boardId + "']")));
+
+        WebElement header = driver.findElement(By.cssSelector("#header-quick-access .header-quick-access-list a[href='" + boardId + "']"));
+
         return header != null;
+
+
     }
 
-    public BoardsPage deleteBoard(String boardName) {
+    public BoardsPage deleteBoard(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a.js-open-board[href='" + boardId + "']")));
-        WebElement archiveIcon = boardElement.findElement(By.cssSelector("i.fa-archive"));
-        archiveIcon.click();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement boardElement = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.cssSelector("a.js-open-board[href='" + boardId + "']")));
 
-        return this;
+            WebElement archiveIcon = boardElement.findElement(By.cssSelector("i.fa-archive"));
+
+            archiveIcon.click();
+
+            return this;
+
     }
 
-    public BoardsPage movingBoard(String boardName, String targetBoardName) {
+
+    public BoardsPage movingBoard(String boardName, String targetBoardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
         String targetBoardId = getBoardId(targetBoardName);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement sourceBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.js-open-board[href='" + boardId + "']")));
-        WebElement targetBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.js-open-board[href='" + targetBoardId + "']")));
+        WebElement sourceBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a.js-open-board[href='" + boardId + "']")));
+
+        WebElement targetBoard = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a.js-open-board[href='" + targetBoardId + "']")));
 
         Actions actions = new Actions(driver);
         actions.clickAndHold(sourceBoard)
-                .moveToElement(targetBoard, 50, 3)
+                .moveToElement(targetBoard,50,3)
                 .release()
                 .perform();
 
+
         return this;
+
     }
-
-    public List<String> getBoardOrder() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list li.js-board")));
-
+    public List<String> getBoardOrder() throws InterruptedException {
+        Thread.sleep(1000);
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
         List<String> boardNames = new ArrayList<>();
 
@@ -167,21 +174,25 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return boardNames;
     }
 
-    public boolean hasBoardOrderChanged(List<String> originalOrder) {
+    public boolean hasBoardOrderChanged(List<String> originalOrder) throws InterruptedException {
+        Thread.sleep(1000);
         List<String> currentOrder = getBoardOrder();
+
         return !currentOrder.equals(originalOrder);
     }
 
-    public void clearAll() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list li.js-board")));
+    public void clearAll() throws InterruptedException {
 
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
+
         for (WebElement board : boards) {
             String boardName = board.findElement(By.cssSelector("span.board-list-item-name div.viewer p")).getText();
             deleteBoard(boardName);
         }
+
+
     }
+
 
 
 
