@@ -70,9 +70,19 @@ jobs:
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
+          export DEVICE_TYPE=pc
           
-          mvn test -Dtest=WekanBoardsTests
+          if [ "${{ github.event.inputs.pc_device }}" == "true" ]; then
+            DEVICE_TYPE="pc"
+          elif [ "${{ github.event.inputs.tablet_device }}" == "true" ]; then
+            DEVICE_TYPE="tablet"
+          elif [ "${{ github.event.inputs.phone_device }}" == "true" ]; then
+            DEVICE_TYPE="phone"
+          fi
           
+          echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
+          mvn test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+
           # Tear down grid if exists
           docker stop grid_container || true
           docker rm -f grid_container || true
