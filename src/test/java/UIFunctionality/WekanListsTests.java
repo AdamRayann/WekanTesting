@@ -26,7 +26,7 @@ public class WekanListsTests {
 
     @BeforeEach
     public void setUp(){
-        BaseURL = System.getProperty("base.url", "http://localhost:5000/");
+        BaseURL = System.getProperty("base_url", "http://localhost:5000/");
         driver = getDriver();
         configureWindowSize(driver);
         driver.get(BaseURL);

@@ -14,7 +14,7 @@ public class BoardAPITests {
 
     @BeforeAll
     public static void setup() {
-        BASE_URL = System.getProperty("base.url", "http://localhost:5000");
+        BASE_URL = System.getProperty("base_url", "http://localhost:5000");
         RestAssured.baseURI = BASE_URL;
         System.out.println("Base URL: " + BASE_URL);
     }
