@@ -105,7 +105,7 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
           
-          mvn test -Dtest=WekanBoardsTests
+          mvn test -Dtest=UIFunctionality.*
           
           # Tear down grid if exists
           docker stop grid_container || true
