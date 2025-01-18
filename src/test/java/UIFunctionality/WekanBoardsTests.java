@@ -133,7 +133,7 @@ public class WekanBoardsTests {
 
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws InterruptedException {
         boardsPage.clearAll();
         if (driver != null) {
             driver.quit();

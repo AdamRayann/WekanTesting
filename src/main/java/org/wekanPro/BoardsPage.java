@@ -50,11 +50,12 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     }
 
 
-    public ListPage addNewBoardAndGetIt(String boardName) {
+    public ListPage addNewBoardAndGetIt(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         driver.findElement(addNewBoardBtn).click();
         driver.findElement(newBoardNameTextField).sendKeys(boardName);
         driver.findElement(newBoardCreateBtn).click();
-
+        Thread.sleep(1000);
         return new ListPage(driver);
     }
 
@@ -71,8 +72,8 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return this;
 
     }
-    public static String getBoardId(String boardName) {
-
+    public static String getBoardId(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
 
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
         for (WebElement board : boards) {
@@ -89,7 +90,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
 
     public boolean boardExist(String boardName) throws InterruptedException {
-
+        Thread.sleep(1000);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.board-list")));
         Thread.sleep(1000);
@@ -105,6 +106,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
     }
 
     public boolean addToFavorite(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
         WebElement boardElement = driver.findElement(By.cssSelector("a.js-open-board[href='" + boardId + "']"));
         WebElement starIcon = boardElement.findElement(By.cssSelector("i.fa.js-star-board"));
@@ -119,7 +121,8 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     }
 
-    public BoardsPage deleteBoard(String boardName) {
+    public BoardsPage deleteBoard(String boardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
 
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -136,6 +139,7 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
 
 
     public BoardsPage movingBoard(String boardName, String targetBoardName) throws InterruptedException {
+        Thread.sleep(1000);
         String boardId = getBoardId(boardName);
         String targetBoardId = getBoardId(targetBoardName);
 
@@ -156,7 +160,8 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return this;
 
     }
-    public List<String> getBoardOrder() {
+    public List<String> getBoardOrder() throws InterruptedException {
+        Thread.sleep(1000);
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
         List<String> boardNames = new ArrayList<>();
 
@@ -168,13 +173,15 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
         return boardNames;
     }
 
-    public boolean hasBoardOrderChanged(List<String> originalOrder) {
+    public boolean hasBoardOrderChanged(List<String> originalOrder) throws InterruptedException {
+        Thread.sleep(1000);
         List<String> currentOrder = getBoardOrder();
 
         return !currentOrder.equals(originalOrder);
     }
 
-    public void clearAll() {
+    public void clearAll() throws InterruptedException {
+
         List<WebElement> boards = driver.findElements(By.cssSelector("ul.board-list li.js-board"));
 
         for (WebElement board : boards) {
