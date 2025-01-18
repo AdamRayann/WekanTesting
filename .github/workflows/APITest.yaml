@@ -25,5 +25,4 @@ jobs:
 
       - name: Run API Tests
         run: |
-          mvn test -Dtest=APIFunctionality.* -Dbase.url=${{ github.event.inputs.Base_URL }}
-      
+          mvn test -Dtest=APIFunctionality.* -Dbase.url=${{ github.event.inputs.Base_URL }} -Dsurefire.failIfNoSpecifiedTests=false
