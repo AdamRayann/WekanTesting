@@ -156,7 +156,8 @@ public class BoardsPage extends LoadableComponent<BoardsPage> {
                 .moveToElement(targetBoard,50,3)
                 .release()
                 .perform();
-        driver.get(BaseURL);
+
+
         return this;
 
     }
