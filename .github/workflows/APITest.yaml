@@ -3,7 +3,7 @@ name: API Testing
 on:
   workflow_dispatch:
     inputs:
-      Base_URL:
+      base_url:
         required: true
         type: string
         description: Site's domain (local by default)
@@ -25,4 +25,8 @@ jobs:
 
       - name: Run API Tests
         run: |
-          mvn test -Dtest=APIFunctionality.* -Dbase.url=${{ github.event.inputs.Base_URL }} -Dsurefire.failIfNoSpecifiedTests=false
+          export BASE_URL=${{ github.event.inputs.base_url }}
+          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=BoardAPITests
+          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=CardsAPITests
+          mvn -q test -Dbase.url=${{ github.event.inputs.BASE_URL }} -Dtest=ListsAPITests
+
