@@ -74,7 +74,7 @@ jobs:
           
           
           echo "Running tests with base URL: $BASE_URL and device type: $DEVICE_TYPE"
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests
+          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=UIFunctionality.*
 
 
           # Tear down grid if exists
@@ -105,7 +105,7 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
           
-          mvn test -Dtest=UIFunctionality.*
+          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=UIFunctionality.*
           
           # Tear down grid if exists
           docker stop grid_container || true
