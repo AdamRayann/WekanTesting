@@ -18,6 +18,8 @@ public class ListsAPITests {
 
     private String token = "1n7YIu0bSGi7ah4Ko8uAWUHbm7fgRDQiuEGFyPEwrM1";
     private String userId = "Fu2uaJfwvsMzQioDH";
+//    private String token = "NgyfLTYdiZazjlgRnUbB3szP8mTG-vrLCsO9UowPqXC";
+//    private String userId = "9HLenebwygD3Dtync";
     private static String BASE_URL = "http://localhost:5000";
     @BeforeAll
     public static void setup() {

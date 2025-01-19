@@ -102,7 +102,6 @@ public class WekanBoardsTests {
 
 //    @Test
 //    public void testResponsiveDesign() throws InterruptedException {
-//        // Define screen resolutions
 //        int[][] screenResolutions = {
 //                {1920, 1080}, // Desktop
 //                {768, 1024},  // Tablet
@@ -110,9 +109,9 @@ public class WekanBoardsTests {
 //        };
 //
 //        for (int[] resolution : screenResolutions) {
-//            // Set browser window size
-//            driver.manage().window().setSize(new Dimension(resolution[0], resolution[1]));
 //
+//            driver.manage().window().setSize(new Dimension(resolution[0], resolution[1]));
+//            boardsPage.clearAll();
 //            moveBoardTest();
 //
 //
