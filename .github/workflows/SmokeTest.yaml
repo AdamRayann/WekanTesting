@@ -54,7 +54,7 @@ jobs:
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#creatingListTest
 
       - name: Generate Allure Report
-        run: mvn allure:report
+        run: mvn -q allure:report
 
       - name: Upload Allure Report
         uses: actions/upload-artifact@v3
