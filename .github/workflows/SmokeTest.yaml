@@ -12,12 +12,12 @@ on:
       base_url:
         required: true
         type: string
-        description: Base URL of the site under test
+        description: Site's domain (local by default)
         default: http://localhost:5000
 
 jobs:
   SmokeTests:
-    name: Run Smoke Tests
+    name: Smoke Test on Chrome
     runs-on: ubuntu-latest
 
     steps:
@@ -30,12 +30,8 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-      - name: Install Chrome Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libnss3 libxss1 libasound2
-
-      - name: Launch standalone grid - Chrome
+      - name: Launch Selenium Grid - Chrome
+        if: ${{ contains(github.event.inputs.grid_url, 'localhost') }}
         run: |
           docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
 
@@ -44,7 +40,6 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
           echo "Running smoke tests with base URL: $BASE_URL"
-
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanBoardsTests#creatingBoardTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#addingCardToListTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#testCardMove
@@ -53,22 +48,8 @@ jobs:
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#deletingListTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#creatingListTest
 
-      - name: Generate Allure Report
-        run: mvn -q allure:report
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: target/surefire-reports
-
-      - name: Tear Down Selenium Grid
+      - name: Tear down Selenium Grid
+        if: always()
         run: |
           docker stop grid_container || true
           docker rm -f grid_container || true
