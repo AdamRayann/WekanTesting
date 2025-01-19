@@ -15,15 +15,9 @@ on:
         description: Site's domain (local by default)
         default: http://localhost:5000
 
-      chrome_131_0:
-        description: 'Chrome (131.0)'
-        required: false
-        type: boolean
-        default: true
-
 jobs:
-  TestChrome_131_0:
-    name: Smoke Test Chrome 131.0
+  SmokeTests:
+    name: Smoke Test on Chrome
     runs-on: ubuntu-latest
 
     steps:
@@ -36,30 +30,26 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-      - name: Launch standalone grid - Chrome
+      - name: Launch Selenium Grid - Chrome
         if: ${{ contains(github.event.inputs.grid_url, 'localhost') }}
         run: |
           docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
 
-      - name: Run Tests for PC
-        if: ${{ github.event.inputs.pc_device == 'true' }}
+      - name: Run Smoke Tests
         run: |
-          export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
-          DEVICE_TYPE="pc"
-          echo "Running tests for PC with base URL: $BASE_URL"
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanBoardsTests#creatingBoardTest
+          echo "Running smoke tests with base URL: $BASE_URL"
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanBoardsTests#creatingBoardTest
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#addingCardToListTest
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#testCardMove
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#moveCardToAnotherList
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#moveListTest
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#deletingListTest
+          mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#creatingListTest
 
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests#addingCardToListTest
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests#testCardMove
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanCardsTests#moveCardToAnotherList
-
-
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests#moveListTest
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests#deletingListTest
-          mvn -q test -Dbase_url=$BASE_URL -Ddevice.type=$DEVICE_TYPE -Dtest=WekanListsTests#creatingListTest
-          
-          # Tear down grid if exists
+      - name: Tear down Selenium Grid
+        if: always()
+        run: |
           docker stop grid_container || true
-
+          docker rm -f grid_container || true
