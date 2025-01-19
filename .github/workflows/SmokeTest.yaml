@@ -1,4 +1,4 @@
-name: Smoke Testing
+name: Smoke Testing , Allure & Lighthouse Reports
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   SmokeTests:
-    name: Smoke Test on Chrome
+    name: Run Smoke Tests with Allure and Lighthouse Reports
     runs-on: ubuntu-latest
 
     steps:
@@ -30,16 +30,16 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-      - name: Launch Selenium Grid - Chrome
-        if: ${{ contains(github.event.inputs.grid_url, 'localhost') }}
+      - name: Launch standalone grid - Chrome
         run: |
-          docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
+          docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:latest
 
       - name: Run Smoke Tests
         run: |
           export GRID_URL=${{ github.event.inputs.grid_url }}
           export BASE_URL=${{ github.event.inputs.base_url }}
           echo "Running smoke tests with base URL: $BASE_URL"
+
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanBoardsTests#creatingBoardTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#addingCardToListTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanCardsTests#testCardMove
@@ -48,7 +48,29 @@ jobs:
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#deletingListTest
           mvn -q test -Dbase_url=$BASE_URL -Dtest=WekanListsTests#creatingListTest
 
-      - name: Tear down Selenium Grid
+      - name: Generate Allure Report
+        run: |
+          mvn allure:report
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: target/site/allure-maven/index.html
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Run Lighthouse Report
+        run: lighthouse ${{ github.event.inputs.base_url }} --output html --output-path ./lighthouse-report.html
+
+      - name: Upload Lighthouse Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: lighthouse-report.html
+
+      - name: Tear Down Selenium Grid
         if: always()
         run: |
           docker stop grid_container || true
