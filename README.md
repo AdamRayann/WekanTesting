@@ -45,12 +45,9 @@ This project implements automated testing for the **Wekan** platform, a collabor
 ### **Prerequisites**
 1. **Java Development Kit (JDK)**: Version 23 or higher.
 2. **Maven**: For managing dependencies and building the project.
-3. **Docker**: To run the Wekan application and Selenium Grid containers.
+3. **Docker**: To run the Wekan application .
 4. **Browser Drivers**: ChromeDriver and GeckoDriver (Firefox) as per your browser versions.
-5. **Allure Command-Line Tool**: For report generation.
-   ```bash
-   npm install -g allure-commandline --save-dev
-   ```
+
 
 ### **Setting Up Wekan Locally**
 1. Pull the Wekan Docker image:
@@ -78,7 +75,7 @@ This project implements automated testing for the **Wekan** platform, a collabor
 
 ### **1. Clone the Repository**
 ```bash
-git clone <repository_url>
+git clone https://github.com/AdamRayann/WekanTesting.git
 cd WekanTesting
 ```
 
@@ -106,16 +103,6 @@ mvn test -Dbase_url=http://localhost:5000 -Dtest=APIFunctionality.*
 
 ## **Generate Reports**
 
-### **Allure Reports**
-1. After test execution, generate the report:
-   ```bash
-   allure generate target/allure-results --clean
-   ```
-2. Open the report in the browser:
-   ```bash
-   allure serve target/allure-results
-   ```
-
 ### **Lighthouse Reports**
 1. Install Lighthouse globally:
    ```bash
@@ -130,8 +117,7 @@ mvn test -Dbase_url=http://localhost:5000 -Dtest=APIFunctionality.*
 
 ## **Key Features**
 - Automated tests for UI and API functionalities.
-- Detailed execution reports using Allure.
 - Responsive design validation across different devices.
 - Smoke tests for quick validation of critical functionality.
 
-For more information or contributions, feel free to create an issue in the repository or contact the project maintainer.
+For more information or contributions, feel free to create an issue in the repository.
