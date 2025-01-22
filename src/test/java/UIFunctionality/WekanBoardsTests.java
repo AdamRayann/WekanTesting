@@ -1,6 +1,5 @@
 package UIFunctionality;
 
-import dev.failsafe.function.CheckedRunnable;
 import org.openqa.selenium.Dimension;
 import org.wekanPro.BoardsPage;
 import org.wekanPro.LoginPage;
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
-import static org.wekanPro.DriverFactory.*;
+import static DriverFactory.DriverFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WekanBoardsTests {

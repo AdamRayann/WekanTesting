@@ -13,8 +13,8 @@ import org.openqa.selenium.WebDriver;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.wekanPro.DriverFactory.getDriver;
-import static org.wekanPro.DriverFactory.skipNgrokPage;
+import static DriverFactory.DriverFactory.getDriver;
+import static DriverFactory.DriverFactory.skipNgrokPage;
 
 public class WekanCardsTests {
 
