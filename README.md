@@ -1,5 +1,6 @@
 
 # **Automated Testing for Wekan**
+🔗 **[View Project Slider](https://www.canva.com/design/DAGcopMyqhw/z9_hz2oMJMCBA8rW1cyOQg/view?utm_content=DAGcopMyqhw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1e4dfc1088)**  
 
 ## **Overview**
 This project implements automated testing for the **Wekan** platform, a collaborative task management web application. The tests cover various aspects of the application, including UI testing, responsiveness, and API testing. The goal is to ensure the application's functionality, reliability, and performance meet user expectations.
