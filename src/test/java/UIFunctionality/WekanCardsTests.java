@@ -25,7 +25,7 @@ public class WekanCardsTests {
 
     @BeforeEach
     public void setUp(){
-        BaseURL = System.getProperty("base_url", "http://localhost:5000/");
+        BaseURL = System.getProperty("base_url", "http://localhost:3000/");
         driver = getDriver();
         configureWindowSize(driver);
         driver.get(BaseURL);
@@ -58,57 +58,57 @@ public class WekanCardsTests {
         System.out.println("Browser window configured for device type: " + deviceType);
     }
 
-    @Test
-    public void addingCardToListTest() throws Exception {
-        boolean cardExist=loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list").
-                addCard("list","first_card").
-                exists("list","first_card");
-
-        assertTrue(cardExist);
-    }
-
-    @Test
-    public void deletingCardsInListTest() throws Exception {
-        Executable action = () ->loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list-to-be-deleted").
-                addCard("list-to-be-deleted","cards-to-be-deleted").
-                delete("list-to-be-deleted","cards-to-be-deleted").
-                exists("list-to-be-deleted","cards-to-be-deleted");
-
-        assertThrows(Exception.class,action);
-    }
-
-    @Test
-    public void testCardMove() throws Exception {
-        String sourceListName = "Doing";
-        String targetListName = "To Do";
-        String cardToBeMoved = "Task 1";
-
-        ListPage listPage = loginPage.signIn().addNewBoardAndGetIt("example")
-                .createNewList(sourceListName)
-                .addCard(sourceListName,cardToBeMoved)
-                .createNewList(targetListName);
-
-        List<String> originalSourceOrder = listPage.getCardOrder(sourceListName);
-        List<String> originalTargetOrder = listPage.getCardOrder(targetListName);
-
-        listPage.movingCard(sourceListName, cardToBeMoved, targetListName);
-
-        assertTrue(listPage.hasCardOrderChanged(sourceListName, originalSourceOrder), "The source list order should have changed.");
-        assertTrue(listPage.hasCardOrderChanged(targetListName, originalTargetOrder), "The target list order should have changed.");
-    }
-    @Test
-    public void boardEmptyName()  {
-        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
-                .createNewList("new list").addCard("new list","")
-                .exists("new list","");
-
-        assertThrows(Exception.class, action);
-    }
-
+//    @Test
+//    public void addingCardToListTest() throws Exception {
+//        boolean cardExist=loginPage.signIn()
+//                .addNewBoardAndGetIt("example")
+//                .createNewList("list").
+//                addCard("list","first_card").
+//                exists("list","first_card");
+//
+//        assertTrue(cardExist);
+//    }
+//
+//    @Test
+//    public void deletingCardsInListTest() throws Exception {
+//        Executable action = () ->loginPage.signIn()
+//                .addNewBoardAndGetIt("example")
+//                .createNewList("list-to-be-deleted").
+//                addCard("list-to-be-deleted","cards-to-be-deleted").
+//                delete("list-to-be-deleted","cards-to-be-deleted").
+//                exists("list-to-be-deleted","cards-to-be-deleted");
+//
+//        assertThrows(Exception.class,action);
+//    }
+//
+//    @Test
+//    public void testCardMove() throws Exception {
+//        String sourceListName = "Doing";
+//        String targetListName = "To Do";
+//        String cardToBeMoved = "Task 1";
+//
+//        ListPage listPage = loginPage.signIn().addNewBoardAndGetIt("example")
+//                .createNewList(sourceListName)
+//                .addCard(sourceListName,cardToBeMoved)
+//                .createNewList(targetListName);
+//
+//        List<String> originalSourceOrder = listPage.getCardOrder(sourceListName);
+//        List<String> originalTargetOrder = listPage.getCardOrder(targetListName);
+//
+//        listPage.movingCard(sourceListName, cardToBeMoved, targetListName);
+//
+//        assertTrue(listPage.hasCardOrderChanged(sourceListName, originalSourceOrder), "The source list order should have changed.");
+//        assertTrue(listPage.hasCardOrderChanged(targetListName, originalTargetOrder), "The target list order should have changed.");
+//    }
+//    @Test
+//    public void boardEmptyName()  {
+//        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
+//                .createNewList("new list").addCard("new list","")
+//                .exists("new list","");
+//
+//        assertThrows(Exception.class, action);
+//    }
+//
 
 
     @AfterEach

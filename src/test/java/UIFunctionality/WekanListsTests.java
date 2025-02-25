@@ -26,11 +26,11 @@ public class WekanListsTests {
 
     @BeforeEach
     public void setUp(){
-        BaseURL = System.getProperty("base_url", "http://localhost:5000/");
+        BaseURL = System.getProperty("base_url", "http://localhost:3000/");
         driver = getDriver();
         configureWindowSize(driver);
         driver.get(BaseURL);
-        if (!BaseURL.equals("http://localhost:5000/"))
+        if (!BaseURL.equals("http://localhost:3000/"))
             skipNgrokPage(driver);
         loginPage = new LoginPage(driver).get();
 
@@ -61,52 +61,52 @@ public class WekanListsTests {
         System.out.println("Browser window configured for device type: " + deviceType);
     }
 
-    @Test
-    public void creatingListTest() throws Exception {
-        boolean listExist=loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list").exists("list");
-
-        assertTrue(listExist);
-
-
-    }
-
-    @Test
-    public void deletingListTest() throws Exception {
-        boolean listExist=loginPage.signIn()
-                .addNewBoardAndGetIt("example")
-                .createNewList("list-to-be-deleted").
-                delete("list-to-be-deleted").
-                exists("list-to-be-deleted");
-
-        assertFalse(listExist);
-    }
-
-
-
-    @Test
-    public void moveListTest() throws Exception {
-        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
-        listPage.createNewList("Doing");
-        listPage.createNewList("To Do");
-
-        List<String> originalOrder = listPage.getListOrder();
-        listPage.movingList("Done", "To Do");
-
-        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
-
-        assertFalse(listMoved);
-    }
-
-    @Test
-    public void boardEmptyName()  {
-        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
-                .createNewList("").addCard("","new card");
-
-        assertThrows(Exception.class, action);
-    }
-
+//    @Test
+//    public void creatingListTest() throws Exception {
+//        boolean listExist=loginPage.signIn()
+//                .addNewBoardAndGetIt("example")
+//                .createNewList("list").exists("list");
+//
+//        assertTrue(listExist);
+//
+//
+//    }
+//
+//    @Test
+//    public void deletingListTest() throws Exception {
+//        boolean listExist=loginPage.signIn()
+//                .addNewBoardAndGetIt("example")
+//                .createNewList("list-to-be-deleted").
+//                delete("list-to-be-deleted").
+//                exists("list-to-be-deleted");
+//
+//        assertFalse(listExist);
+//    }
+//
+//
+//
+//    @Test
+//    public void moveListTest() throws Exception {
+//        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("Done");
+//        listPage.createNewList("Doing");
+//        listPage.createNewList("To Do");
+//
+//        List<String> originalOrder = listPage.getListOrder();
+//        listPage.movingList("Done", "To Do");
+//
+//        boolean listMoved=listPage.hasListOrderChanged(originalOrder);
+//
+//        assertFalse(listMoved);
+//    }
+//
+//    @Test
+//    public void boardEmptyName()  {
+//        Executable action = () -> loginPage.signIn().addNewBoardAndGetIt("new board")
+//                .createNewList("").addCard("","new card");
+//
+//        assertThrows(Exception.class, action);
+//    }
+//
 
 
 

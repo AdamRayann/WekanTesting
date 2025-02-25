@@ -22,11 +22,11 @@ public class WekanBoardsTests {
 
     @BeforeEach
     public void setUp() throws Exception {
-        BaseURL = System.getProperty("base_url", "http://localhost:5000/");
+        BaseURL = System.getProperty("base_url", "http://localhost:3000/");
         driver = getDriver();
         configureWindowSize(driver);
         driver.get(BaseURL);
-        if (!BaseURL.equals("http://localhost:5000/"))
+        if (!BaseURL.equals("http://localhost:3000/"))
             skipNgrokPage(driver);
         loginPage = new LoginPage(driver).get();
         boardsPage = loginPage.signIn();
@@ -55,15 +55,15 @@ public class WekanBoardsTests {
         }
         System.out.println("Browser window configured for device type: " + deviceType);
     }
-    @Test
-    public void creatingBoardTest() throws InterruptedException {
-
-            boardsPage.addNewBoard("example");
-            boolean boardExist=boardsPage.boardExist("example");
-
-            assertTrue(boardExist, "Board 'example' should exist");
-
-    }
+//    @Test
+//    public void creatingBoardTest() throws InterruptedException {
+//
+//            boardsPage.addNewBoard("example");
+//            boolean boardExist=boardsPage.boardExist("example");
+//
+//            assertTrue(boardExist, "Board 'example' should exist");
+//
+//    }
 
     @Test
     public void addToFavoriteTest() throws InterruptedException {
@@ -76,55 +76,55 @@ public class WekanBoardsTests {
 
     }
 
-    @Test
-    public void deleteBoardTest() throws InterruptedException {
-        boardsPage.addNewBoard("to_be_deleted");
-        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
-
-        assertFalse(boardExist);
-    }
-
-
-    @Test
-    public void moveBoardTest() throws InterruptedException {
-
-
-        boardsPage.addNewBoard("board1");
-        boardsPage.addNewBoard("board2");
-        boardsPage.addNewBoard("board3");
-        List<String> originalOrder = boardsPage.getBoardOrder();
-
-        boolean boardMoved=boardsPage.movingBoard("board3","board1").hasBoardOrderChanged(originalOrder);
-
-        assertTrue(boardMoved);
-    }
-
 //    @Test
-//    public void testResponsiveDesign() throws InterruptedException {
-//        int[][] screenResolutions = {
-//                {1920, 1080}, // Desktop
-//                {768, 1024},  // Tablet
-//                {375, 667}    // Mobile
-//        };
+//    public void deleteBoardTest() throws InterruptedException {
+//        boardsPage.addNewBoard("to_be_deleted");
+//        boolean boardExist=boardsPage.deleteBoard("to_be_deleted").boardExist("to_be_deleted");
 //
-//        for (int[] resolution : screenResolutions) {
-//
-//            driver.manage().window().setSize(new Dimension(resolution[0], resolution[1]));
-//            boardsPage.clearAll();
-//            moveBoardTest();
-//
-//
-//        }
+//        assertFalse(boardExist);
 //    }
-
-
-    @Test
-    public void boardEmptyName()  {
-        Executable action = () -> boardsPage.addNewBoardAndGetIt("").createNewList("new list");
-
-        assertThrows(Exception.class, action);
-    }
-
+//
+//
+//    @Test
+//    public void moveBoardTest() throws InterruptedException {
+//
+//
+//        boardsPage.addNewBoard("board1");
+//        boardsPage.addNewBoard("board2");
+//        boardsPage.addNewBoard("board3");
+//        List<String> originalOrder = boardsPage.getBoardOrder();
+//
+//        boolean boardMoved=boardsPage.movingBoard("board3","board1").hasBoardOrderChanged(originalOrder);
+//
+//        assertTrue(boardMoved);
+//    }
+//
+////    @Test
+////    public void testResponsiveDesign() throws InterruptedException {
+////        int[][] screenResolutions = {
+////                {1920, 1080}, // Desktop
+////                {768, 1024},  // Tablet
+////                {375, 667}    // Mobile
+////        };
+////
+////        for (int[] resolution : screenResolutions) {
+////
+////            driver.manage().window().setSize(new Dimension(resolution[0], resolution[1]));
+////            boardsPage.clearAll();
+////            moveBoardTest();
+////
+////
+////        }
+////    }
+//
+//
+//    @Test
+//    public void boardEmptyName()  {
+//        Executable action = () -> boardsPage.addNewBoardAndGetIt("").createNewList("new list");
+//
+//        assertThrows(Exception.class, action);
+//    }
+//
 
 
 

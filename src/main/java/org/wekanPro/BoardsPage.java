@@ -14,7 +14,7 @@ import java.util.Objects;
 public class BoardsPage extends LoadableComponent<BoardsPage> {
 
     private static WebDriver driver = null;
-    private final String BaseURL = "http://localhost:5000";
+    private final String BaseURL = "http://localhost:3000";
     //private final String BaseURL = "https://492c-84-110-182-34.ngrok-free.app/";
     private final By header = By.cssSelector("#header-main-bar > h1");
     private final By addNewBoardBtn = By.cssSelector("#content > .wrapper > .board-list > .js-add-board > .board-list-item");
