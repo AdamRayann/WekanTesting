@@ -1,0 +1,29 @@
+name: Build and Push Test Image
+
+on:
+  push:
+    branches:
+      - main  # Runs when pushing to main
+  pull_request:
+    branches:
+      - main  # Runs on PRs to main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub using Token
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build the Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/wekan-tests:latest -f tests/Dockerfile ./tests
+
+      - name: Push the Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/wekan-tests:latest
