@@ -1,18 +1,19 @@
-# Use an official Maven image with OpenJDK
-FROM maven:3.9-eclipse-temurin-17 AS builder
+# Use OpenJDK 23 with Maven
+FROM maven:3.9-eclipse-temurin-23
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /tests
 
-# Copy only the Maven project files to download dependencies first
+# Copy test files & dependencies
 COPY pom.xml ./
-RUN mvn dependency:go-offline  # Pre-download dependencies for caching
+RUN mvn dependency:go-offline  # Cache dependencies
 
-# Copy the test source files after downloading dependencies
+# Copy the test source files
 COPY src ./src
 
-# Run tests when the container starts
+# Run tests when container starts
 CMD ["mvn", "clean", "test"]
+
 
 
 
