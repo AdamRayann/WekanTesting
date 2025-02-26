@@ -23,7 +23,7 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Build the Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/wekan-tests:latest -f src/Dockerfile ./src
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/wekan-tests:latest -f Dockerfile .
 
       - name: Push the Docker Image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/wekan-tests:latest
