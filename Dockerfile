@@ -12,7 +12,7 @@ RUN mvn dependency:go-offline  # Cache dependencies
 COPY src ./src
 
 # Run tests when container starts
-CMD ["mvn", "clean", "test"]
+CMD ["mvn", "clean", "test", "-Dwebdriver.chrome.driver=/usr/local/bin/chromedriver", "-Dwebdriver.chrome.args=--headless,--no-sandbox,--disable-dev-shm-usage"]
 
 
 
