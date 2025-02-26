@@ -65,12 +65,7 @@ public class WekanBoardsTests {
 //
 //    }
 
-    @Test
-    public void addToFavoriteTest() throws InterruptedException {
 
-        assertTrue(true);
-
-    }
 //    @Test
 //    public void addToFavoriteTest() throws InterruptedException {
 //        boardsPage.addNewBoard("fav");
