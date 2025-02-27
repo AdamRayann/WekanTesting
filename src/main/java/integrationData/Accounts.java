@@ -63,6 +63,6 @@ public class Accounts {
         }
     }
 
-    public static final Account account1 = new Account("admin1", "test@example.com", "admin1");
-
+    public static final Account account1 = new Account("adminn", "test@example.com", "adminn");
+    public static final Account account2 = new Account("admin1", "test@example.com", "admin1");
 }

@@ -24,8 +24,8 @@ public class BoardAPITests {
 //    public void signInToWekan() {
 //        String loginPayload = """
 //            {
-//                "username": "admin1",
-//                "password": "admin1"
+//                "username": "adminn",
+//                "password": "adminn"
 //            }
 //            """;
 //
@@ -59,8 +59,8 @@ public class BoardAPITests {
 //    public void regenerateToken() {
 //        String loginPayload = """
 //    {
-//        "username": "admin1",
-//        "password": "admin1"
+//        "username": "adminn",
+//        "password": "adminn"
 //    }
 //    """;
 //

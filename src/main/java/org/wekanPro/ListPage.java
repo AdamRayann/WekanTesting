@@ -162,19 +162,35 @@ public ListPage createNewList(String listName) throws InterruptedException {
             System.out.println("List not found: " + listName);
             return null;
         }
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .js-add-card"))).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .js-add-card"))).click();
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#" + listById + " .js-card-title"))).sendKeys(cardName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#" + listById + " .js-card-title"))).sendKeys(cardName);
 
-            wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .confirm"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .confirm"))).click();
 
-            driver.findElement(By.className("js-close-inlined-form")).click();
+        driver.findElement(By.className("js-close-inlined-form")).click();
 
-            return this;
+        return this;
 
     }
 
+
+    public ListPage sortCards(String listName) throws InterruptedException {
+        Thread.sleep(1000);
+
+        String listById = getList(listName);
+
+        if (listById == null) {
+            System.out.println("List not found: " + listName);
+            return null;
+        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#" + listById + " .js-magic-button"))).click();
+        Thread.sleep(2000);
+        return this;
+
+    }
 
     public WebElement getCard(String listName, String cardName) throws InterruptedException {
         Thread.sleep(1000);

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +60,30 @@ public class WekanListsTests {
                 break;
         }
         System.out.println("Browser window configured for device type: " + deviceType);
+    }
+
+
+    @Test
+    public void sortTasksTest() throws Exception {
+        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("To Do");
+        listPage.createNewList("Doing");
+        listPage.createNewList("Done");
+
+        listPage.addCard("To Do","sec task");
+        listPage.addCard("To Do","first task");
+        listPage.addCard("To Do","forth task");
+        listPage.addCard("To Do","third task");
+        listPage.sortCards("To Do");
+
+        List<String> cardsOrder = listPage.getCardOrder("To Do");
+        List<String> rightOrder = new ArrayList<>();
+        rightOrder.add("first task");
+        rightOrder.add("sec task");
+        rightOrder.add("third task");
+        rightOrder.add("forth task");
+
+        boolean listMoved=cardsOrder.equals(rightOrder);
+        assertTrue(listMoved);
     }
 
 //    @Test
