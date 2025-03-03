@@ -13,13 +13,13 @@ public class BoardAPITests {
     public static String token;
     private static String BASE_URL;
 
-    @BeforeAll
-    public static void setup() {
-
-        BASE_URL = System.getProperty("base_url", "http://localhost:3000");
-        RestAssured.baseURI = BASE_URL;
-        System.out.println("Base URL: " + BASE_URL);
-    }
+//    @BeforeAll
+//    public static void setup() {
+//
+//        BASE_URL = System.getProperty("base_url", "http://localhost:3000");
+//        RestAssured.baseURI = BASE_URL;
+//        System.out.println("Base URL: " + BASE_URL);
+//    }
 //    @Test
 //    public void signInToWekan() {
 //        String loginPayload = """
