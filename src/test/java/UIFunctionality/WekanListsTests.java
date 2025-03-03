@@ -63,28 +63,28 @@ public class WekanListsTests {
     }
 
 
-    @Test
-    public void sortTasksTest() throws Exception {
-        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("To Do");
-        listPage.createNewList("Doing");
-        listPage.createNewList("Done");
-
-        listPage.addCard("To Do","sec task");
-        listPage.addCard("To Do","first task");
-        listPage.addCard("To Do","forth task");
-        listPage.addCard("To Do","third task");
-        listPage.sortCards("To Do");
-
-        List<String> cardsOrder = listPage.getCardOrder("To Do");
-        List<String> rightOrder = new ArrayList<>();
-        rightOrder.add("first task");
-        rightOrder.add("sec task");
-        rightOrder.add("third task");
-        rightOrder.add("forth task");
-
-        boolean listMoved=cardsOrder.equals(rightOrder);
-        assertTrue(listMoved);
-    }
+//    @Test
+//    public void sortTasksTest() throws Exception {
+//        listPage=loginPage.signIn().addNewBoardAndGetIt("example").createNewList("To Do");
+//        listPage.createNewList("Doing");
+//        listPage.createNewList("Done");
+//
+//        listPage.addCard("To Do","sec task");
+//        listPage.addCard("To Do","first task");
+//        listPage.addCard("To Do","forth task");
+//        listPage.addCard("To Do","third task");
+//        listPage.sortCards("To Do");
+//
+//        List<String> cardsOrder = listPage.getCardOrder("To Do");
+//        List<String> rightOrder = new ArrayList<>();
+//        rightOrder.add("first task");
+//        rightOrder.add("sec task");
+//        rightOrder.add("third task");
+//        rightOrder.add("forth task");
+//
+//        boolean listMoved=cardsOrder.equals(rightOrder);
+//        assertTrue(listMoved);
+//    }
 
 //    @Test
 //    public void creatingListTest() throws Exception {

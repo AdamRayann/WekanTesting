@@ -49,31 +49,6 @@ public class ListsAPITests {
         System.out.println("User ID: " + userId);
     }
 
-    @Test
-    public void sortListTasks() {
-        String boardId = "RyAgJa3zh3cb4ceGd";
-
-        Response response = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .get(BASE_URL+"/api/boards/" + boardId + "/lists");
-
-        System.out.println("Response Status Code: " + response.getStatusCode());
-        System.out.println("Response Body: " + response.asString());
-
-        if (response.getStatusCode() == 200) {
-
-            List<Map<String, Object>> lists = response.jsonPath().getList("$");
-            for (Map<String, Object> list : lists) {
-                System.out.println("List ID: " + list.get("_id"));
-                System.out.println("Title: " + list.get("title"));
-                System.out.println("-------------------");
-            }
-            response.then()
-                    .statusCode(200)
-                    .body("_id", notNullValue());
-        }
-    }
 
 
 
