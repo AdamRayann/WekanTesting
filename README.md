@@ -20,7 +20,7 @@ This project implements automated testing for the **Wekan** platform, a collabor
 - **Non-Functional Testing**: Ensure responsiveness and accessibility across various devices.
 - **Smoke Tests**: Run critical tests to verify the application's stability for key functionality.
 - **API Testing**: Validate key API endpoints using REST-Assured.
-
+ 
 ---
 
 ## **Test Plan Summary**
