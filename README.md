@@ -12,7 +12,7 @@ This project implements automated testing for the **Wekan** platform, a collabor
 
 ## **Testing Strategy and Objectives**
  
-### **Objectives**
+### **Objectives** 
 - Validate key functionalities of Wekan, including boards, lists, and cards.
 - Test the responsiveness of the application across different device types (PC, Tablet, and Phone).
 - Verify the API endpoints' functionality for user authentication and board management.
